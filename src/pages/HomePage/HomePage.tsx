@@ -377,56 +377,56 @@ export default function Home() {
         <footer className={styles.footer} data-animate>
           <Row gutter={[32, 32]}>
             <Col xs={24} sm={12} lg={6}>
-              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>
+              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#ffffffff" }}>
                 Về chúng tôi
               </h4>
-              <p style={{ color: "#666", fontSize: "14px", lineHeight: "1.6" }}>
+              <p style={{ color: "#ffffffff", fontSize: "14px", lineHeight: "1.6" }}>
                 Khách sạn 5 sao hàng đầu với dịch vụ hoàn hảo và tiện nghi cao cấp.
               </p>
             </Col>
             <Col xs={24} sm={12} lg={6}>
-              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>Liên hệ</h4>
-              <div style={{ color: "#666", fontSize: "14px", lineHeight: "2" }}>
+              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#ffffffff" }}>Liên hệ</h4>
+              <div style={{ color: "#ffffffff", fontSize: "14px", lineHeight: "2" }}>
                 <div>📍 123 Đường Sang Trọng, TP HCM</div>
                 <div>📞 +84 (0)28 1234 5678</div>
                 <div>📧 info@luxuryhotel.vn</div>
               </div>
             </Col>
             <Col xs={24} sm={12} lg={6}>
-              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>Dịch vụ</h4>
-              <div style={{ color: "#666", fontSize: "14px", lineHeight: "2" }}>
+              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#ffffffff" }}>Dịch vụ</h4>
+              <div style={{ color: "#ffffffff", fontSize: "14px", lineHeight: "2" }}>
                 <div>
-                  <a href="#" style={{ color: "#666", textDecoration: "none" }}>
+                  <a href="#" style={{ color: "#ffffffff", textDecoration: "none" }}>
                     Đặt phòng
                   </a>
                 </div>
                 <div>
-                  <a href="#" style={{ color: "#666", textDecoration: "none" }}>
+                  <a href="#" style={{ color: "#ffffffff", textDecoration: "none" }}>
                     Nhà hàng
                   </a>
                 </div>
                 <div>
-                  <a href="#" style={{ color: "#666", textDecoration: "none" }}>
+                  <a href="#" style={{ color: "#ffffffff", textDecoration: "none" }}>
                     Spa
                   </a>
                 </div>
               </div>
             </Col>
             <Col xs={24} sm={12} lg={6}>
-              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>Theo dõi</h4>
-              <div style={{ color: "#666", fontSize: "14px", lineHeight: "2" }}>
+              <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#ffffffff" }}>Theo dõi</h4>
+              <div style={{ color: "#ffffffff", fontSize: "14px", lineHeight: "2" }}>
                 <div>
-                  <a href="#" style={{ color: "#666", textDecoration: "none" }}>
+                  <a href="#" style={{ color: "#ffffffff", textDecoration: "none" }}>
                     Facebook
                   </a>
                 </div>
                 <div>
-                  <a href="#" style={{ color: "#666", textDecoration: "none" }}>
+                  <a href="#" style={{ color: "#ffffffff", textDecoration: "none" }}>
                     Instagram
                   </a>
                 </div>
                 <div>
-                  <a href="#" style={{ color: "#666", textDecoration: "none" }}>
+                  <a href="#" style={{ color: "#ffffffff", textDecoration: "none" }}>
                     Twitter
                   </a>
                 </div>
@@ -434,7 +434,7 @@ export default function Home() {
             </Col>
           </Row>
           <Divider style={{ margin: "24px 0" }} />
-          <div style={{ textAlign: "center", color: "#999", fontSize: "12px" }}>
+          <div style={{ textAlign: "center", color: "#ffffffff", fontSize: "12px" }}>
             © 2025 Luxury Hotels. Tất cả quyền được bảo lưu.
           </div>
         </footer>
