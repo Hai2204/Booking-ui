@@ -1,0 +1,34 @@
+# Dependencies (Thư mục chứa các gói phụ thuộc)
+/node_modules
+
+# Build artifacts (Các tệp được tạo ra sau quá trình build/biên dịch)
+/build
+/dist
+/out
+.cache
+.parcel-cache
+
+# Environment variables (Các tệp biến môi trường nhạy cảm)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs and miscellaneous (Logs và các tệp linh tinh khác)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.log
+logs
+*.log
+
+# Editor/IDE-specific files (Tệp cấu hình của trình soạn thảo/IDE)
+.idea         # Cho các IDE của JetBrains (WebStorm, IntelliJ)
+.vscode       # Cho VS Code
+*.iml         # Tệp của JetBrains
+.DS_Store     # Tệp hệ thống macOS
+Thumbs.db     # Tệp hệ thống Windows
+
+# Optional: Add any other project-specific files you want to ignore here

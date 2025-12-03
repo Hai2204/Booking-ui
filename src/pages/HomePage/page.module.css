@@ -1,0 +1,383 @@
+/* Global styles */
+.layout {
+  background: #f9f7f4;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: white;
+  padding: 16px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 14px;
+}
+
+.nav a:hover {
+  color: #b89968;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #1a472a 0%, #2d6a47 100%);
+  color: white;
+  padding: 120px 24px;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 56px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  animation: slideUp 0.8s ease-out 0.1s backwards;
+}
+
+.heroSubtitle {
+  font-size: 18px;
+  margin-bottom: 32px;
+  opacity: 0.95;
+  animation: slideUp 0.8s ease-out 0.2s backwards;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Stats Section */
+.statsSection {
+  background: white;
+  padding: 60px 24px;
+  max-width: 1200px;
+  margin: -40px auto 0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 10;
+}
+
+.statItem {
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.statIcon {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1a472a;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  color: #999;
+  font-size: 14px;
+}
+
+/* Blog Section */
+.blogSection {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.sectionTitle {
+  font-size: 40px;
+  font-weight: bold;
+  color: #1a472a;
+  margin-bottom: 12px;
+}
+
+.sectionDesc {
+  font-size: 16px;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.blogCard {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(30px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.blogCard.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.blogCard:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+}
+
+.cardCover {
+  position: relative;
+  overflow: hidden;
+  height: 250px;
+}
+
+.cardCover img {
+  transition: transform 0.5s ease;
+}
+
+.blogCard:hover .cardCover img {
+  transform: scale(1.08);
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #b89968;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cardContent {
+  padding: 20px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1a472a;
+  line-height: 1.4;
+  min-height: 48px;
+}
+
+.cardExcerpt {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.cardMeta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.metaInfo {
+  flex: 1;
+}
+
+.author {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.date {
+  font-size: 12px;
+  color: #999;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Amenities Section */
+.amenitiesSection {
+  background: white;
+  padding: 60px 24px;
+  margin-top: 80px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+}
+
+.amenityCard {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  text-align: center;
+  transition: all 0.4s ease;
+  border-radius: 8px;
+}
+
+.amenityCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  border-top: 3px solid #b89968;
+}
+
+.amenityIcon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.amenityName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a472a;
+  margin-bottom: 8px;
+}
+
+.amenityDesc {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Rooms Section */
+.roomsSection {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
+
+.roomCard {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s ease;
+  border-radius: 8px;
+}
+
+.roomCard:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Footer */
+.footer {
+  background: #1a472a;
+  color: white;
+  padding: 60px 24px;
+  margin-top: 80px;
+}
+
+.footer h4 {
+  color: #b89968;
+}
+
+.footer a:hover {
+  color: #b89968;
+}
+
+/* Back to Top Button */
+.backToTop {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 36px;
+  }
+
+  .heroSubtitle {
+    font-size: 16px;
+  }
+
+  .sectionTitle {
+    font-size: 28px;
+  }
+
+  .nav {
+    gap: 16px;
+  }
+
+  .backToTop {
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero {
+    padding: 60px 16px;
+  }
+
+  .heroTitle {
+    font-size: 28px;
+  }
+
+  .nav {
+    gap: 12px;
+  }
+
+  .nav a {
+    display: none;
+  }
+}
