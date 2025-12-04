@@ -213,8 +213,6 @@ export default function Home() {
           </div>
           <Row gutter={[24, 24]}>
             {blogPosts.map((post) => (
-              console.log(post),
-              
               <Col key={post.id} xs={24} sm={12} lg={8}>
                 <Card
                   // className={`${styles.blogCard} ${visibleSections[`blog-${post.id}`] ? styles.visible : ""}`}

@@ -41,11 +41,11 @@ function App() {
             if (r.protected) {
               // wrap in ProtectedRoute with optional role
               element = r.requiredRole ? (
-                <ProtectedRoute requiredRole={r.requiredRole}>
+                <ProtectedRoute requiredRole={r.requiredRole} isProtected={r.protected}>
                   <Comp />
                 </ProtectedRoute>
               ) : (
-                <ProtectedRoute>
+                <ProtectedRoute isProtected={r.protected}>
                   <Comp />
                 </ProtectedRoute>
               )

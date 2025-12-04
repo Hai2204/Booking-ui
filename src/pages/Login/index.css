@@ -1,0 +1,232 @@
+/* Combine auth styles for login, signup, forgot password */
+
+.layout {
+  background: linear-gradient(135deg, #f9f7f4 0%, #fafbfc 100%);
+  min-height: 100vh;
+}
+
+.content {
+  padding: 0 16px;
+}
+
+.header {
+  margin-bottom: 24px;
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #b89968;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 8px 0;
+}
+
+.backLink:hover {
+  color: #a68457;
+}
+
+.authCard {
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  animation: fadeIn 0.6s ease-out 0.2s backwards;
+  padding: 40px 32px;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1a472a;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.form {
+  margin-bottom: 24px;
+}
+
+.input {
+  border-radius: 6px;
+  border: 1px solid #e0e0e0 !important;
+  transition: all 0.3s ease;
+}
+
+.input:hover {
+  border-color: #b89968 !important;
+}
+
+.input:focus {
+  border-color: #b89968 !important;
+  box-shadow: 0 0 0 2px rgba(184, 153, 104, 0.1) !important;
+}
+
+/* Override Ant Design input styles */
+.ant-input:hover,
+.ant-input-password input:hover {
+  border-color: #b89968 !important;
+}
+
+.ant-input:focus,
+.ant-input-password input:focus {
+  border-color: #b89968 !important;
+  box-shadow: 0 0 0 2px rgba(184, 153, 104, 0.1) !important;
+}
+
+.rememberForgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.forgotLink {
+  color: #b89968;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgotLink:hover {
+  color: #a68457;
+}
+
+.submitBtn {
+  background-color: #1a472a !important;
+  border-color: #1a472a !important;
+  height: 40px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.submitBtn:hover {
+  background-color: #0f2d1a !important;
+  border-color: #0f2d1a !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 71, 42, 0.3);
+}
+
+.divider {
+  text-align: center;
+  margin: 24px 0;
+  position: relative;
+  color: #999;
+  font-size: 14px;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e0e0e0;
+  z-index: 0;
+}
+
+.divider span {
+  background: white;
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.socialBtn {
+  border-radius: 6px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: #666 !important;
+}
+
+.socialBtn:hover {
+  color: #b89968 !important;
+  border-color: #b89968 !important;
+}
+
+.footer {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin-top: 24px;
+}
+
+.link {
+  color: #b89968;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: #a68457;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .authCard {
+    padding: 32px 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .authCard {
+    padding: 24px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .rememberForgot {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}

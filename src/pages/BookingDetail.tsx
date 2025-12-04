@@ -36,8 +36,6 @@ export default function BookingDetail() {
           message.error("Không tìm thấy phòng")
         }
       } catch (error) {
-        console.log(error);
-        
         message.error("Lỗi khi tải thông tin phòng")
       } finally {
         setLoading(false)
