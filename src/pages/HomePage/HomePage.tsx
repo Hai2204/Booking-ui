@@ -23,6 +23,7 @@ export default function Home() {
   const [visibleSections, setVisibleSections] = useState({})
   const [scrollTop, setScrollTop] = useState(false)
   const containerRef = useRef(null)
+  const headerRef = useRef<HTMLElement | null>(null)
 
   const blogPosts: BlogPost[] = [
     {
@@ -136,18 +137,28 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  const handleAnchorClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault()
+    const el = document.getElementById(id)
+    const headerHeight = headerRef.current?.offsetHeight || 0
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.pageYOffset - headerHeight
+      window.scrollTo({ top, behavior: "smooth" })
+    }
+  }
+
   return (
     <Layout className={styles.layout} ref={containerRef}>
       {/* Header */}
-      <header className={styles.header}>
+      <header ref={headerRef} className={styles.header}>
         <div className={styles.headerContainer}>
           <div className={styles.logo}>
             <span style={{ fontSize: "24px", fontWeight: "bold", color: "#1a472a" }}>Luxury Hotels</span>
           </div>
           <nav className={styles.nav}>
-            <a href="#blog">Blog</a>
-            <a href="#amenities">Tiện nghi</a>
-            <a href="#rooms">Phòng</a>
+            <a href="#blog" onClick={(e) => handleAnchorClick(e, "blog")}>Blog</a>
+            <a href="#amenities" onClick={(e) => handleAnchorClick(e, "amenities")}>Tiện nghi</a>
+            <a href="#rooms" onClick={(e) => handleAnchorClick(e, "rooms")}>Phòng</a>
             <Button type="primary" style={{ backgroundColor: "#b89968", borderColor: "#b89968" }}>
               Đặt phòng
             </Button>
