@@ -32,7 +32,7 @@ export default function Home() {
       category: "Phòng",
       date: "15 Tháng 12, 2024",
       author: "Nguyễn Thanh",
-      image: "/public/luxury-event-conference.jpg",
+      image: "/luxury-event-conference.jpg",
       views: 1250,
       likes: 234,
     },
@@ -43,7 +43,7 @@ export default function Home() {
       category: "Ẩm thực",
       date: "12 Tháng 12, 2024",
       author: "Trần Hùng",
-      image: "/public/luxury-event-conference.jpg",
+      image: "/luxury-event-conference.jpg",
       views: 980,
       likes: 189,
     },
@@ -54,7 +54,7 @@ export default function Home() {
       category: "Wellness",
       date: "10 Tháng 12, 2024",
       author: "Lê Minh",
-   image: "/public/luxury-event-conference.jpg",
+   image: "/luxury-event-conference.jpg",
       views: 1540,
       likes: 312,
     },
@@ -65,7 +65,7 @@ export default function Home() {
       category: "Sự kiện",
       date: "8 Tháng 12, 2024",
       author: "Phạm Linh",
-   image: "/public/luxury-event-conference.jpg",
+   image: "/luxury-event-conference.jpg",
       views: 876,
       likes: 156,
     },
@@ -76,7 +76,7 @@ export default function Home() {
       category: "Du lịch",
       date: "5 Tháng 12, 2024",
       author: "Vũ Hạ",
-   image: "/public/luxury-event-conference.jpg",
+   image: "/luxury-event-conference.jpg",
       views: 2100,
       likes: 445,
     },
@@ -87,7 +87,7 @@ export default function Home() {
       category: "Đào tạo",
       date: "1 Tháng 12, 2024",
       author: "Đỗ Anh",
-     image: "/public/luxury-event-conference.jpg",
+     image: "/luxury-event-conference.jpg",
       views: 654,
       likes: 98,
     },
@@ -300,7 +300,7 @@ export default function Home() {
                       <Col key={i} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
                           <img
-                            src={'./public/luxury-suite-hotel.jpg'}
+                            src={'/luxury-suite-hotel.jpg'}
                             alt="Deluxe Room"
                             style={{ width: "100%", borderRadius: "8px", marginBottom: "16px", maxWidth: "400px" }}
                           />
@@ -328,7 +328,7 @@ export default function Home() {
                       <Col key={i} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
                           <img
-                            src={'./public/luxury-suite-room.jpg'}
+                            src={'/luxury-suite-room.jpg'}
                             alt="Suite Room"
                             style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
                           />
@@ -352,7 +352,7 @@ export default function Home() {
                       <Col key={i} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
                           <img
-                            src={'./public/family-room-hotel.jpg'}
+                            src={'/family-room-hotel.jpg'}
                             alt="Penthouse"
                             style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
                           />

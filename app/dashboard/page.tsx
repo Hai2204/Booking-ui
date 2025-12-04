@@ -40,7 +40,7 @@ export default function DashboardPage() {
         description: "Phòng đơn thoải mái và sạch sẽ",
         price: 500000,
         capacity: 1,
-        image: "/single-room-hotel.jpg",
+        image: "./public/single-room-hotel.jpg",
         amenities: ["WiFi", "TV", "Phòng tắm"],
         available: true,
       },
@@ -50,7 +50,7 @@ export default function DashboardPage() {
         description: "Phòng đôi rộng rãi với giường King Size",
         price: 750000,
         capacity: 2,
-        image: "/double-room-hotel.jpg",
+        image: "./public/double-room-hotel.jpg",
         amenities: ["WiFi", "TV", "Phòng tắm", "Ban công"],
         available: true,
       },
@@ -60,7 +60,7 @@ export default function DashboardPage() {
         description: "Phòng gia đình với không gian rộng",
         price: 1000000,
         capacity: 4,
-        image: "/family-room-hotel.jpg",
+        image: "./public/family-room-hotel.jpg",
         amenities: ["WiFi", "TV", "Phòng tắm", "Ban công", "Bếp nhỏ"],
         available: true,
       },
@@ -70,7 +70,7 @@ export default function DashboardPage() {
         description: "Phòng Suite cao cấp với đầy đủ tiện nghi",
         price: 1500000,
         capacity: 2,
-        image: "/luxury-suite-hotel.jpg",
+        image: "./public/luxury-suite-hotel.jpg",
         amenities: ["WiFi", "TV", "Phòng tắm", "Ban công", "Minibar", "Jacuzzi"],
         available: true,
       },
@@ -133,7 +133,7 @@ export default function DashboardPage() {
         <Empty description="Không có phòng nào" />
       ) : (
         <Row gutter={[16, 16]}>
-          {rooms.map((room) => (
+          {rooms.map((room :any) => (
             <Col key={room.id} xs={24} sm={12} lg={6}>
               <Card
                 hoverable

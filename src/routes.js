@@ -27,7 +27,7 @@ const routes = [
     { path: "/my-bookings", component: MyBookings, protected: true, requiredRole: "customer" },
 
     // admin-protected routes
-    { path: "/admin", component: Admin, protected: false, },=
+    { path: "/admin", component: Admin, protected: false, },
     { path: "/admin/rooms", component: AdminRooms, protected: true, requiredRole: "admin" },
     { path: "/admin/bookings", component: AdminBookings, protected: true, requiredRole: "admin" },
     { path: "/admin/reports", component: AdminReports, protected: true, requiredRole: "admin" },
