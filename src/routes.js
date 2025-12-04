@@ -1,17 +1,16 @@
 import Login from "@/pages/Login/Login"
-import Register from "./pages/Register"
-import ForgotPassword from "./pages/ForgotPassword"
-import ResetPassword from "./pages/ResetPassword"
-import Dashboard from "./pages/Dashboard"
-import HomePage from "./pages/HomePage/HomePage"
-import BookingDetail from "./pages/BookingDetail"
-import MyBookings from "./pages/MyBookings"
+import AccessDenied from "./pages/AccessDenied"
 import Admin from "./pages/Admin"
-import AdminRooms from "./pages/AdminRooms"
 import AdminBookings from "./pages/AdminBookings"
 import AdminReports from "./pages/AdminReports"
+import AdminRooms from "./pages/AdminRooms"
+import BookingDetail from "./pages/BookingDetail"
+import ForgotPassword from "./pages/ForgotPassword"
+import HomePage from "./pages/HomePage/HomePage"
+import MyBookings from "./pages/Bookings"
 import NotFound from "./pages/NotFound"
-import AccessDenied from "./pages/AccessDenied"
+import Register from "./pages/Register"
+import ResetPassword from "./pages/ResetPassword"
 
 // route list used by App.jsx — keeps routing centralized and easier to maintain
 const routes = [
@@ -24,6 +23,7 @@ const routes = [
     // customer-protected routes
     { path: "/dashboard", component: HomePage, protected: false },
     { path: "/booking/:roomId", component: BookingDetail, protected: true, requiredRole: "customer" },
+    { path: "/bookings", component: MyBookings, protected: false },
     { path: "/my-bookings", component: MyBookings, protected: true, requiredRole: "customer" },
 
     // admin-protected routes

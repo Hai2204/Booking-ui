@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { Layout, Row, Col, Card, Button, Tabs, Space, Avatar, Divider } from "antd"
-import { ArrowUp, Heart, MessageCircle, Star, Users, Award } from "lucide-react"
+import { Avatar, Button, Card, Col, Divider, Layout, Row, Space, Tabs, Typography } from "antd"
+import { ArrowUp, Award, Heart, MessageCircle, Star, Users } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 import styles from "./page.module.css"
+
+const { Text } = Typography;
 
 const { Content } = Layout
 
@@ -55,7 +57,7 @@ export default function Home() {
       category: "Wellness",
       date: "10 Tháng 12, 2024",
       author: "Lê Minh",
-   image: "/luxury-event-conference.jpg",
+      image: "/luxury-event-conference.jpg",
       views: 1540,
       likes: 312,
     },
@@ -66,7 +68,7 @@ export default function Home() {
       category: "Sự kiện",
       date: "8 Tháng 12, 2024",
       author: "Phạm Linh",
-   image: "/luxury-event-conference.jpg",
+      image: "/luxury-event-conference.jpg",
       views: 876,
       likes: 156,
     },
@@ -77,7 +79,7 @@ export default function Home() {
       category: "Du lịch",
       date: "5 Tháng 12, 2024",
       author: "Vũ Hạ",
-   image: "/luxury-event-conference.jpg",
+      image: "/luxury-event-conference.jpg",
       views: 2100,
       likes: 445,
     },
@@ -88,7 +90,7 @@ export default function Home() {
       category: "Đào tạo",
       date: "1 Tháng 12, 2024",
       author: "Đỗ Anh",
-     image: "/luxury-event-conference.jpg",
+      image: "/luxury-event-conference.jpg",
       views: 654,
       likes: 98,
     },
@@ -380,6 +382,12 @@ export default function Home() {
               },
             ]}
           />
+          <Text underline={true}>
+            <a className="link" href="/bookings" style={{ cursor: "pointer" }}>
+              Xem Thêm
+            </a>
+          </Text>
+
         </section>
 
         {/* Footer */}
