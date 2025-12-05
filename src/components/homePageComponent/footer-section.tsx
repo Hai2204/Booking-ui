@@ -17,7 +17,7 @@ export default function FooterSection() {
 
           <Col xs={24} md={6}>
             <h4 className="text-lg font-bold mb-4">Liên kết nhanh</h4>
-            <Space direction="vertical" className="w-full text-sm text-gray-300">
+            <Space orientation="vertical" className="w-full text-sm text-gray-300">
               <a href="#" className="hover:text-white transition-colors">
                 Phòng
               </a>
@@ -35,7 +35,7 @@ export default function FooterSection() {
 
           <Col xs={24} md={6}>
             <h4 className="text-lg font-bold mb-4">Liên hệ</h4>
-            <Space direction="vertical" className="w-full text-sm text-gray-300">
+            <Space orientation="vertical" className="w-full text-sm text-gray-300">
               <div className="flex items-center gap-2">
                 <Phone size={16} />
                 <span>+84 123 456 789</span>

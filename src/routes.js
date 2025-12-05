@@ -4,10 +4,10 @@ import Admin from "./pages/Admin"
 import AdminBookings from "./pages/AdminBookings"
 import AdminReports from "./pages/AdminReports"
 import AdminRooms from "./pages/AdminRooms"
-import BookingDetail from "./pages/BookingDetail"
+import BookingDetail from "./pages/RoomDetail"
 import ForgotPassword from "./pages/ForgotPassword"
 import HomePage from "./pages/HomePage/HomePage"
-import MyBookings from "./pages/Bookings"
+import MyBookings from "./pages/Bookings/Bookings"
 import NotFound from "./pages/NotFound"
 import Register from "./pages/Register"
 import ResetPassword from "./pages/ResetPassword"
@@ -22,7 +22,7 @@ const routes = [
 
     // customer-protected routes
     { path: "/dashboard", component: HomePage, protected: false },
-    { path: "/booking/:roomId", component: BookingDetail, protected: true, requiredRole: "customer" },
+    { path: "/booking/:roomId", component: BookingDetail, protected: false },
     { path: "/bookings", component: MyBookings, protected: false },
     { path: "/my-bookings", component: MyBookings, protected: true, requiredRole: "customer" },
 

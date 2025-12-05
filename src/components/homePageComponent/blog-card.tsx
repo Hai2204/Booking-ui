@@ -43,7 +43,7 @@ export default function BlogCard({ title, excerpt, image, category, date, author
       <h3 className="text-lg font-bold mb-2 line-clamp-2 hover:text-blue-600 transition-colors">{title}</h3>
       <p className="text-gray-600 text-sm mb-4 line-clamp-2">{excerpt}</p>
 
-      <Space direction="vertical" className="w-full text-xs text-gray-500 mb-4">
+      <Space orientation="vertical" className="w-full text-xs text-gray-500 mb-4">
         <div className="flex items-center gap-2">
           <Calendar size={14} />
           {date}

@@ -24,7 +24,7 @@ interface BlogPost {
 export default function Home() {
   const [visibleSections, setVisibleSections] = useState({})
   const [scrollTop, setScrollTop] = useState(false)
-  const containerRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const headerRef = useRef<HTMLElement | null>(null)
 
   const blogPosts: BlogPost[] = [

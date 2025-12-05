@@ -1,0 +1,163 @@
+.layout {
+  background: #f9f7f4;
+  min-height: 100vh;
+}
+
+.header {
+  background: white;
+  padding: 16px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 14px;
+}
+
+.nav a:hover {
+  color: #b89968;
+}
+
+.content {
+  padding: 40px 24px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filterSection {
+  background: linear-gradient(135deg, #1a472a 0%, #2d6a47 100%);
+  padding: 40px 24px;
+  margin: -40px -24px 40px -24px;
+  color: white;
+}
+
+.pageTitle {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 32px;
+  text-align: center;
+  animation: slideUp 0.6s ease-out;
+}
+
+.filterContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.roomsGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.roomCard {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.roomCard:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  height: 250px;
+}
+
+.imageWrapper img {
+  transition: transform 0.5s ease;
+}
+
+.roomCard:hover .imageWrapper img {
+  transform: scale(1.08);
+}
+
+.roomInfo {
+  padding: 16px;
+}
+
+.roomName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a472a;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  min-height: 48px;
+}
+
+.ratingSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    gap: 16px;
+  }
+
+  .pageTitle {
+    font-size: 28px;
+  }
+
+  .filterContainer {
+    padding: 16px;
+  }
+}

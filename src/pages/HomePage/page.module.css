@@ -320,6 +320,10 @@
   animation: slideUp 0.4s ease-out;
 }
 
+.roomFilter {
+  margin-bottom: 24px;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {

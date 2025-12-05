@@ -6,11 +6,11 @@ import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
-import Navbar from "../components/Navbar"
-import { createBooking } from "../redux/slices/bookingSlice"
-import type { RootState } from "../redux/store"
-import { paymentService } from "../services/paymentService"
-import { roomService } from "../services/roomService"
+import Navbar from "../../components/Navbar"
+import { createBooking } from "../../redux/slices/bookingSlice"
+import type { RootState } from "../../redux/store"
+import { paymentService } from "../../services/paymentService"
+import { roomService } from "../../services/roomService"
 
 const { Content } = Layout
 
