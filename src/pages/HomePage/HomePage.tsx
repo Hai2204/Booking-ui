@@ -161,9 +161,6 @@ export default function Home() {
             <a href="#blog" onClick={(e) => handleAnchorClick(e, "blog")}>Blog</a>
             <a href="#amenities" onClick={(e) => handleAnchorClick(e, "amenities")}>Tiện nghi</a>
             <a href="#rooms" onClick={(e) => handleAnchorClick(e, "rooms")}>Phòng</a>
-            <Button type="primary" style={{ backgroundColor: "#b89968", borderColor: "#b89968" }}>
-              Đặt phòng
-            </Button>
           </nav>
         </div>
       </header>
@@ -312,11 +309,13 @@ export default function Home() {
                     {[1, 2].map((i) => (
                       <Col key={i} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
-                          <img
+                          <a href={`/booking/${i}`}>
+                            <img
                             src={'/luxury-suite-hotel.jpg'}
                             alt="Deluxe Room"
-                            style={{ width: "100%", borderRadius: "8px", marginBottom: "16px", maxWidth: "400px" }}
+                            style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
                           />
+                          </a>
                           <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
                             Phòng Deluxe {i}
                           </h4>

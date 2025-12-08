@@ -294,6 +294,11 @@
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
 }
+.roomCard:hover img{
+  transform: scale(1.05);
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
 
 /* Footer */
 .footer {

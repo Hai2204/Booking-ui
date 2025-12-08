@@ -239,7 +239,7 @@ export default function BookingsPage() {
                                                     style={{
                                                         backgroundColor: "#b89968",
                                                         position: "absolute",
-                                                        top: "12px",
+                                                        top: "95px",
                                                         right: "12px",
                                                         fontSize: "14px",
                                                         padding: "4px 12px",
