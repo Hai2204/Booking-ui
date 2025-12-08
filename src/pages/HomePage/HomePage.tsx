@@ -228,11 +228,14 @@ export default function Home() {
                   // className={`${styles.blogCard} ${visibleSections[`blog-${post.id}`] ? styles.visible : ""}`}
                   cover={
                     <div className={styles.cardCover}>
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        style={{ width: "100%", height: "250px", objectFit: "cover" }}
-                      />
+                      <a href={`/blog/${post.id}`}>
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          style={{ width: "100%", height: "250px", objectFit: "cover" }}
+                          title={post.title}
+                        />
+                      </a>
                       <div className={styles.categoryBadge}>{post.category}</div>
                     </div>
                   }
@@ -269,6 +272,11 @@ export default function Home() {
               </Col>
             ))}
           </Row>
+          <Text underline={true}>
+            <a className="link" href="/blogs" style={{ cursor: "pointer" }}>
+              Xem Thêm
+            </a>
+          </Text>
         </section>
 
         {/* Amenities Section */}
@@ -311,10 +319,10 @@ export default function Home() {
                         <Card className={styles.roomCard}>
                           <a href={`/booking/${i}`}>
                             <img
-                            src={'/luxury-suite-hotel.jpg'}
-                            alt="Deluxe Room"
-                            style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
-                          />
+                              src={'/luxury-suite-hotel.jpg'}
+                              alt="Deluxe Room"
+                              style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
+                            />
                           </a>
                           <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
                             Phòng Deluxe {i}
