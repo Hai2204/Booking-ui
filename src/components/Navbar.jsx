@@ -44,8 +44,11 @@ export default function Navbar() {
         boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
       }}
     >
-      <div style={{ fontSize: "20px", fontWeight: "bold", color: "#1890ff" }}>Booking Hainv</div>
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <div className={"logo"}>
+
+      <div style={{ fontSize: "24px", fontWeight: "bold", color: "#1a472a" }}>Booking Hainv</div>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "16px", fontSize: "20px", fontWeight: "bold", color: "#1a472a" }}>
         <span>{user?.fullName}</span>
         <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
           <Avatar size="large" icon={<UserOutlined />} style={{ background: "#1890ff", cursor: "pointer" }} />
