@@ -17,7 +17,8 @@ function App() {
   useEffect(() => {
     const token = getAuthToken()
     if (token) {
-      const userData = localStorage.getItem("user")
+      const userData = localStorage.getItem("user");
+      console.log(13, userData);
       if (userData) {
         dispatch(setUser(JSON.parse(userData)))
       }

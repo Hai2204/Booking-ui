@@ -26,16 +26,16 @@ const routes = [
     { path: "/dashboard", component: HomePage, protected: false },
     { path: "/booking/:roomId", component: BookingDetail, protected: false },
     { path: "/bookings", component: MyBookings, protected: false },
-    { path: "/my-bookings", component: MyBookings, protected: true, requiredRole: "customer" },
+    { path: "/my-bookings", component: MyBookings, protected: true, requiredRole: "ROLE_USER" },
 
     // customer-protected routes
     { path: "/blogs", component: Blogs, protected: false },
     { path: "/blog/:blogId", component: BlogItem, protected: false },
     // admin-protected routes
-    { path: "/admin", component: Admin, protected: false, },
-    { path: "/admin/rooms", component: AdminRooms, protected: true, requiredRole: "admin" },
-    { path: "/admin/bookings", component: AdminBookings, protected: true, requiredRole: "admin" },
-    { path: "/admin/reports", component: AdminReports, protected: true, requiredRole: "admin" },
+    { path: "/admin", component: Admin, protected: true, requiredRole: "ROLE_ADMIN" },
+    { path: "/admin/rooms", component: AdminRooms, protected: true, requiredRole: "ROLE_ADMIN" },
+    { path: "/admin/bookings", component: AdminBookings, protected: true, requiredRole: "ROLE_ADMIN" },
+    { path: "/admin/reports", component: AdminReports, protected: true, requiredRole: "ROLE_ADMIN" },
 
     { path: "/403", component: AccessDenied, protected: false },
     { path: "/*", component: NotFound, protected: false }

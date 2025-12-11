@@ -1,28 +1,51 @@
+import { roomService } from "@/services/roomService"
+import { ArrowLeftOutlined } from "@ant-design/icons"
 import { Button, Card, Col, DatePicker, Divider, Form, InputNumber, Layout, message, Row } from "antd"
 import { MapPin, Wifi as WiFi } from "lucide-react"
-import { useState } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import styles from "./booking.module.css"
-import { ArrowLeftOutlined } from "@ant-design/icons"
 
 const { Content } = Layout
 
-interface RoomDetails {
-    id: number
+interface Partner {
+    partnerId: number
     name: string
-    type: string
-    price: number
-    rating: number
-    reviews: number
-    capacity: number
-    image: string
+    contactInfo: string
+}
+interface Accommodation {
+    accommodationId: number
+    partner: Partner
+    name: string
+    accommodationType: string
+    description: string
     city: string
     address: string
+}
+
+interface Room {
+    id: number
+    accommodation: Accommodation
+    name: string
+    typeRoom: string
+    price: number
+    active: number
     description: string
-    amenities: string[]
-    longDescription: string
-    images: string[]
-    cancellationPolicy: string
+    amenities: string
+    policy: string
+}
+
+  const toVND = (value : any) => {
+  value = value.toString().replace(/\./g, "");
+  const formatted = new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "VND",
+    })
+    .format(value)
+    .replace("₫", "")
+    .trim();
+  
+  return formatted;
 }
 
 export default function BookingDetailPage() {
@@ -32,71 +55,31 @@ export default function BookingDetailPage() {
     const [guests, setGuests] = useState(1)
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
+    const [room, setRoom] = useState<Room>()
 
-    const roomDetailsMap: Record<number, RoomDetails> = {
-        1: {
-            id: 1,
-            name: "Phòng Deluxe Tiêu Chuẩn",
-            type: "Deluxe",
-            price: 189,
-            rating: 4.8,
-            reviews: 342,
-            capacity: 2,
-            image: "/double-room-hotel.jpg",
-            city: "TP. Hồ Chí Minh",
-            address: "123 Đường Sang Trọng, Quận 1, TP. Hồ Chí Minh",
-            description: "Phòng Deluxe tiêu chuẩn với view thành phố tuyệt đẹp",
-            amenities: ["WiFi miễn phí", "Điều hòa không khí", "Tivi Smart 55 inch", "Minibar", "Bàn làm việc"],
-            longDescription:
-                "Khám phá sự thoải mái tối đa trong Phòng Deluxe của chúng tôi. Với diện tích 35m², phòng được thiết kế hiện đại với đầy đủ tiện nghi cao cấp. Giường ngủ vô cùng mềm mại, phòng tắm với bồn tắm và vòi sen massage, không gian sống đích thực cho kỳ nghỉ của bạn.",
-            images: ["/double-room-hotel.jpg", "/double-room-hotel.jpg", "/double-room-hotel.jpg", "/luxury-spa-relaxation.jpg"],
-            cancellationPolicy: "Có thể hủy miễn phí trước 48 giờ. Sau 48 giờ, sẽ tính phí 50% giá phòng.",
-        },
-        3: {
-            id: 3,
-            name: "Phòng Suite Sang Trọng",
-            type: "Suite",
-            price: 289,
-            rating: 4.9,
-            reviews: 156,
-            capacity: 3,
-            image: "/luxury-spa-relaxation.jpg",
-            city: "TP. Hồ Chí Minh",
-            address: "123 Đường Sang Trọng, Quận 1, TP. Hồ Chí Minh",
-            description: "Phòng Suite rộng rãi với phòng khách riêng biệt",
-            amenities: ["WiFi miễn phí", "Phòng khách", "Bếp mini", "Máy giặt", "Tivi Smart"],
-            longDescription:
-                "Phòng Suite sang trọng của chúng tôi mang đến trải nghiệm sống đẳng cấp. Với diện tích 60m², gồm phòng ngủ tách biệt và phòng khách rộng rãi. Hoàn hảo cho gia đình hoặc nhóm bạn muốn tận hưởng sự thoải mái tối đa.",
-            images: ["/luxury-spa-relaxation.jpg", "/luxury-spa-relaxation.jpg", "/luxury-spa-relaxation.jpg", "/luxury-spa-relaxation.jpg"],
-            cancellationPolicy: "Có thể hủy miễn phí trước 72 giờ. Sau 72 giờ, sẽ tính phí 100% giá phòng.",
-        },
-        5: {
-            id: 5,
-            name: "Penthouse Hạng Nhất",
-            type: "Penthouse",
-            price: 589,
-            rating: 5.0,
-            reviews: 87,
-            capacity: 6,
-            image: "/standard-hotel-room.jpg",
-            city: "TP. Hồ Chí Minh",
-            address: "123 Đường Sang Trọng, Quận 1, TP. Hồ Chí Minh",
-            description: "Penthouse hạng nhất với view 360 độ toàn thành phố",
-            amenities: ["WiFi miễn phí", "View 360 độ", "Jacuzzi", "Bếp đầy đủ", "Phòng khách rộng lớn"],
-            longDescription:
-                "Trải nghiệm sống trên những đỉnh cao của sang trọng. Penthouse của chúng tôi có diện tích 120m² với view 360 độ toàn thành phố. Được thiết kế bởi những kiến trúc sư nổi tiếng, mang đến không gian sống không có gì so sánh.",
-            images: ["/standard-hotel-room.jpg", "/standard-hotel-room.jpg", "/standard-hotel-room.jpg", "/luxury-spa-relaxation.jpg"],
-            cancellationPolicy: "Có thể hủy miễn phí trước 7 ngày. Sau 7 ngày, sẽ tính phí 50% giá phòng.",
-        },
-    }
+    useEffect(() => {
+        const fetchRoom = async () => {
+            try {
+                const response = await roomService.getRoomById(roomIdParam)
+                if (response.success) {
+                    setRoom(response.data)
+                } else {
+                    message.error("Không tìm thấy phòng")
+                }
+            } catch (error) {
+                message.error("Lỗi khi tải thông tin phòng")
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchRoom()
+    }, [roomIdParam])
 
-    if (!roomIdParam) {
+    if (!room) {
         return <div>Phòng không tồn tại</div>
     }
 
-    const roomId = Number.parseInt(roomIdParam || "1", 10)
-    const room = roomDetailsMap[roomId] || roomDetailsMap[1]
-    const totalPrice = room.price * nights
+    const totalPrice = room?.price || 0 * nights
 
     const handleBooking = async () => {
         try {
@@ -152,7 +135,7 @@ export default function BookingDetailPage() {
                             Danh sách phòng
                         </a>
                         <span> / </span>
-                        <span>{room.name}</span>
+                        <span>{room?.name}</span>
                     </div>
 
                     {/* Main Content */}
@@ -161,12 +144,12 @@ export default function BookingDetailPage() {
                         <Col xs={24} lg={14}>
                             <div className={styles.imageGallery}>
                                 <img
-                                    src={room.image || "/placeholder.svg"}
+                                    src={"/double-room-hotel.jpg"}
                                     alt={room.name}
                                     style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
                                 />
                                 <Row gutter={[8, 8]}>
-                                    {room.images.map((img, idx) => (
+                                    {["/double-room-hotel.jpg", "/double-room-hotel.jpg", "/double-room-hotel.jpg", "/luxury-spa-relaxation.jpg"].map((img, idx) => (
                                         <Col key={idx} xs={8} sm={6}>
                                             <img
                                                 src={img || "/placeholder.svg"}
@@ -189,16 +172,16 @@ export default function BookingDetailPage() {
                                 <h1 className={styles.roomTitle}>{room.name}</h1>
 
                                 <div className={styles.ratingBar} style={{ marginBottom: "16px" }}>
-                                    <span style={{ color: "#b89968", fontWeight: "bold", fontSize: "18px" }}>⭐ {room.rating}</span>
-                                    <span style={{ color: "#999", marginLeft: "12px" }}>({room.reviews} đánh giá)</span>
+                                    <span style={{ color: "#b89968", fontWeight: "bold", fontSize: "18px" }}>⭐ 4.8 </span>
+                                    <span style={{ color: "#999", marginLeft: "12px" }}>({385} đánh giá)</span>
                                 </div>
 
                                 <div style={{ marginBottom: "24px", color: "#666", fontSize: "14px", lineHeight: "1.8" }}>
                                     <div className={styles.detail}>
                                         <MapPin size={18} style={{ color: "#b89968" }} />
                                         <div>
-                                            <div style={{ fontWeight: "bold" }}>{room.city}</div>
-                                            <div style={{ color: "#999", fontSize: "12px" }}>{room.address}</div>
+                                            <div style={{ fontWeight: "bold" }}>{room.accommodation.city}</div>
+                                            <div style={{ color: "#999", fontSize: "12px" }}>{room.accommodation.address}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +191,7 @@ export default function BookingDetailPage() {
                                 <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>
                                     Mô tả phòng
                                 </h3>
-                                <p style={{ color: "#666", lineHeight: "1.8", marginBottom: "16px" }}>{room.longDescription}</p>
+                                <p style={{ color: "#666", lineHeight: "1.8", marginBottom: "16px" }}>{room.accommodation.description}</p>
 
                                 <Divider />
 
@@ -216,7 +199,7 @@ export default function BookingDetailPage() {
                                     Tiện nghi
                                 </h3>
                                 <Row gutter={[16, 16]}>
-                                    {room.amenities.map((amenity, idx) => (
+                                    {room.amenities.split(",").map((amenity, idx) => (
                                         <Col key={idx} xs={12} sm={8}>
                                             <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#666" }}>
                                                 <WiFi size={16} style={{ color: "#b89968" }} />
@@ -231,7 +214,7 @@ export default function BookingDetailPage() {
                                 <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>
                                     Chính sách hủy
                                 </h3>
-                                <p style={{ color: "#666", fontSize: "14px" }}>{room.cancellationPolicy}</p>
+                                <p style={{ color: "#666", fontSize: "14px" }}>{room.policy}</p>
                             </Card>
                         </Col>
 
@@ -240,7 +223,7 @@ export default function BookingDetailPage() {
                             <Card className={styles.bookingCard} style={{ position: "sticky", top: "80px" }}>
                                 <div style={{ marginBottom: "16px" }}>
                                     <div style={{ fontSize: "24px", fontWeight: "bold", color: "#b89968" }}>
-                                        ${room.price}
+                                        {toVND(room.price)}
                                         <span style={{ fontSize: "14px", color: "#999" }}> / đêm</span>
                                     </div>
                                 </div>
@@ -274,7 +257,7 @@ export default function BookingDetailPage() {
                                     <Form.Item label="Số khách">
                                         <InputNumber
                                             min={1}
-                                            max={room.capacity}
+                                            max={4}
                                             value={guests}
                                             onChange={(value) => setGuests(value || 1)}
                                             size="large"
@@ -288,15 +271,15 @@ export default function BookingDetailPage() {
                                     <div style={{ marginBottom: "16px" }}>
                                         <div className={styles.priceRow}>
                                             <span>Giá phòng ({nights} đêm)</span>
-                                            <span>${room.price * nights}</span>
+                                            <span>{toVND(room.price * nights)}</span>
                                         </div>
                                         <div className={styles.priceRow}>
                                             <span>Thuế & phí</span>
-                                            <span>${Math.round(room.price * nights * 0.1)}</span>
+                                            <span>{toVND(Math.round(room.price * nights * 0.1))}</span>
                                         </div>
                                         <div className={styles.priceFinal}>
                                             <span>Tổng cộng</span>
-                                            <span>${totalPrice + Math.round(room.price * nights * 0.1)}</span>
+                                            <span>{toVND(totalPrice + Math.round(room.price * nights * 0.1))}</span>
                                         </div>
                                     </div>
 

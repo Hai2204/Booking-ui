@@ -4,6 +4,9 @@ import { Avatar, Button, Card, Col, Divider, Layout, Row, Space, Tabs, Typograph
 import { ArrowUp, Award, Heart, MessageCircle, Star, Users } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import styles from "./page.module.css"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchRooms } from "@/redux/slices/roomSlice"
+import type { RootState } from "@/redux/store"
 
 const { Text } = Typography;
 
@@ -20,12 +23,40 @@ interface BlogPost {
   views: number
   likes: number
 }
+interface Partner {
+  partnerId: number
+  name: string
+  contactInfo: string
+}
+interface Accommodation {
+  accommodationId: number
+  partner: Partner
+  name: string
+  accommodationType: string
+  description: string
+  city: string
+  address: string
+}
+
+interface Room {
+  id: number
+  accommodation: Accommodation
+  name: string
+  typeRoom: string
+  price: number
+  active: number
+  description: string
+  amenities: string
+  policy: string
+}
 
 export default function Home() {
   const [visibleSections, setVisibleSections] = useState({})
   const [scrollTop, setScrollTop] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const headerRef = useRef<HTMLElement | null>(null)
+  const dispatch = useDispatch()
+  const { rooms } = useSelector((state: RootState) => state.room)
 
   const blogPosts: BlogPost[] = [
     {
@@ -148,6 +179,24 @@ export default function Home() {
       window.scrollTo({ top, behavior: "smooth" })
     }
   }
+
+  const toVND = (value : any) => {
+  value = value.toString().replace(/\./g, "");
+  const formatted = new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "VND",
+    })
+    .format(value)
+    .replace("₫", "")
+    .trim();
+  
+  return formatted;
+}
+
+
+  useEffect(() => {
+    dispatch(fetchRooms() as any)
+  }, [dispatch])
 
   return (
     <Layout className={styles.layout} ref={containerRef}>
@@ -305,7 +354,6 @@ export default function Home() {
             <h2 className={styles.sectionTitle}>Phòng của chúng tôi</h2>
             <p className={styles.sectionDesc}>Lựa chọn phòng phù hợp với nhu cầu của bạn</p>
           </div>
-
           <Tabs
             defaultActiveKey="1"
             items={[
@@ -314,10 +362,10 @@ export default function Home() {
                 label: "Phòng Deluxe",
                 children: (
                   <Row gutter={[24, 24]}>
-                    {[1, 2].map((i) => (
-                      <Col key={i} xs={24} sm={12}>
+                    {rooms.slice(0, 2).map((i : Room) => (
+                      <Col key={i.id} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
-                          <a href={`/booking/${i}`}>
+                          <a href={`/booking/${i.id}`}>
                             <img
                               src={'/luxury-suite-hotel.jpg'}
                               alt="Deluxe Room"
@@ -325,13 +373,13 @@ export default function Home() {
                             />
                           </a>
                           <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
-                            Phòng Deluxe {i}
+                            {i.name}
                           </h4>
                           <p style={{ color: "#666", marginBottom: "12px" }}>
-                            Thoải mái và sang trọng cho các khách VIP
+                            {i.accommodation.description}
                           </p>
                           <div style={{ fontSize: "18px", fontWeight: "bold", color: "#b89968", marginTop: "12px" }}>
-                            $189 / đêm
+                            {toVND(i.price)} / đêm
                           </div>
                         </Card>
                       </Col>
@@ -343,19 +391,25 @@ export default function Home() {
                 key: "2",
                 label: "Phòng Suite",
                 children: (
-                  <Row gutter={[24, 24]}>
-                    {[1, 2].map((i) => (
-                      <Col key={i} xs={24} sm={12}>
+                <Row gutter={[24, 24]}>
+                    {rooms.slice(2, 4).map((i : Room) => (
+                      <Col key={i.id} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
-                          <img
-                            src={'/luxury-suite-room.jpg'}
-                            alt="Suite Room"
-                            style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
-                          />
-                          <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>Phòng Suite {i}</h4>
-                          <p style={{ color: "#666", marginBottom: "12px" }}>Rộng rãi với phòng khách riêng</p>
+                          <a href={`/booking/${i.id}`}>
+                            <img
+                              src={'/luxury-suite-room.jpg'}
+                              alt="Deluxe Room"
+                              style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
+                            />
+                          </a>
+                          <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
+                            {i.name}
+                          </h4>
+                          <p style={{ color: "#666", marginBottom: "12px" }}>
+                            {i.accommodation.description}
+                          </p>
                           <div style={{ fontSize: "18px", fontWeight: "bold", color: "#b89968", marginTop: "12px" }}>
-                            $289 / đêm
+                            {toVND(i.price)} / đêm
                           </div>
                         </Card>
                       </Col>
