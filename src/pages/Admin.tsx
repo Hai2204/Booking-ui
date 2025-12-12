@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar.tsx';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { AccountBookOutlined, HomeOutlined, ScheduleOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
@@ -19,19 +19,19 @@ const adminMenus = [
     key: "2",
     path: "/admin/rooms.html",
     label: "Room Management",
-    icon: <LaptopOutlined />
+    icon: <HomeOutlined />
   },
   {
     key: "3",
     path: "/admin/bookings.html",
     label: "Booking Management",
-    icon: <NotificationOutlined />
+    icon: <AccountBookOutlined />
   },
   {
     key: "4",
     path: "/admin/reports.html",
     label: "Blog Management",
-    icon: <NotificationOutlined />
+    icon: <ScheduleOutlined />
   }
 ];
 

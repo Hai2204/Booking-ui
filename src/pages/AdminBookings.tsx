@@ -1,12 +1,11 @@
 "use client"
 
-import { Layout, Table, Button, Modal, Select, message, Space, Input } from "antd"
 import { DeleteOutlined } from "@ant-design/icons"
+import { Button, Input, Layout, message, Modal, Select, Space, Table } from "antd"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { cancelBooking, fetchAllBookings, updateBookingStatus } from "../redux/slices/bookingSlice"
 import type { RootState } from "../redux/store"
-import { fetchAllBookings, updateBookingStatus, cancelBooking } from "../redux/slices/bookingSlice"
-import Navbar from "../components/Navbar.tsx"
 
 const { Content } = Layout
 
@@ -157,7 +156,6 @@ export default function AdminBookings() {
 
   return (
     <Layout className="min-h-screen bg-gray-50">
-      <Navbar />
       <Content className="p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6">
