@@ -53,6 +53,7 @@ interface Room {
 export default function Home() {
   const [visibleSections, setVisibleSections] = useState({})
   const [scrollTop, setScrollTop] = useState(false)
+  const [key, setKey] = useState("DLX")
   const containerRef = useRef<HTMLDivElement | null>(null)
   const headerRef = useRef<HTMLElement | null>(null)
   const dispatch = useDispatch()
@@ -180,23 +181,23 @@ export default function Home() {
     }
   }
 
-  const toVND = (value : any) => {
-  value = value.toString().replace(/\./g, "");
-  const formatted = new Intl.NumberFormat("it-IT", {
-    style: "currency",
-    currency: "VND",
+  const toVND = (value: any) => {
+    value = value.toString().replace(/\./g, "");
+    const formatted = new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "VND",
     })
-    .format(value)
-    .replace("₫", "")
-    .trim();
-  
-  return formatted;
-}
+      .format(value)
+      .replace("₫", "")
+      .trim();
+
+    return formatted;
+  }
 
 
   useEffect(() => {
-    dispatch(fetchRooms() as any)
-  }, [dispatch])
+    dispatch(fetchRooms({ category: key, limit: 2 }) as any)
+  }, [dispatch, key])
 
   return (
     <Layout className={styles.layout} ref={containerRef}>
@@ -355,14 +356,15 @@ export default function Home() {
             <p className={styles.sectionDesc}>Lựa chọn phòng phù hợp với nhu cầu của bạn</p>
           </div>
           <Tabs
-            defaultActiveKey="1"
+            defaultActiveKey="DLX"
+            onChange={(key) => setKey(key)}
             items={[
               {
-                key: "1",
+                key: "DLX",
                 label: "Phòng Deluxe",
                 children: (
                   <Row gutter={[24, 24]}>
-                    {rooms.slice(0, 2).map((i : Room) => (
+                    {rooms.map((i: Room) => (
                       <Col key={i.id} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
                           <a href={`/booking/${i.id}`}>
@@ -388,11 +390,11 @@ export default function Home() {
                 ),
               },
               {
-                key: "2",
+                key: "SUT",
                 label: "Phòng Suite",
                 children: (
-                <Row gutter={[24, 24]}>
-                    {rooms.slice(2, 4).map((i : Room) => (
+                  <Row gutter={[24, 24]}>
+                    {rooms.map((i: Room) => (
                       <Col key={i.id} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
                           <a href={`/booking/${i.id}`}>
@@ -418,22 +420,28 @@ export default function Home() {
                 ),
               },
               {
-                key: "3",
+                key: "PEN",
                 label: "Phòng Penthouse",
                 children: (
                   <Row gutter={[24, 24]}>
-                    {[1, 2].map((i) => (
-                      <Col key={i} xs={24} sm={12}>
+                    {rooms.map((i: Room) => (
+                      <Col key={i.id} xs={24} sm={12}>
                         <Card className={styles.roomCard}>
-                          <img
-                            src={'/family-room-hotel.jpg'}
-                            alt="Penthouse"
-                            style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
-                          />
-                          <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>Penthouse {i}</h4>
-                          <p style={{ color: "#666", marginBottom: "12px" }}>Sang trọng nhất với view 360 độ</p>
+                          <a href={`/booking/${i.id}`}>
+                            <img
+                              src={'/family-room-hotel.jpg'}
+                              alt="Deluxe Room"
+                              style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
+                            />
+                          </a>
+                          <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
+                            {i.name}
+                          </h4>
+                          <p style={{ color: "#666", marginBottom: "12px" }}>
+                            {i.accommodation.description}
+                          </p>
                           <div style={{ fontSize: "18px", fontWeight: "bold", color: "#b89968", marginTop: "12px" }}>
-                            $589 / đêm
+                            {toVND(i.price)} / đêm
                           </div>
                         </Card>
                       </Col>

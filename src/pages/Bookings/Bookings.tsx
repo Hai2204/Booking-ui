@@ -1,130 +1,105 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Layout, Row, Col, Card, Button, Input, Select, Space, Badge, Pagination } from "antd"
 import { Search, MapPin, Users, Star } from "lucide-react"
 import Link from "next/link"
 import styles from "./bookings.module.css";
 import FooterPage from "@/components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/redux/store"
+import { fetchRooms } from "@/redux/slices/roomSlice";
 
 const { Content } = Layout
 
+interface BlogPost {
+    id: number
+    title: string
+    excerpt: string
+    category: string
+    date: string
+    author: string
+    image: string
+    views: number
+    likes: number
+}
+interface Partner {
+    partnerId: number
+    name: string
+    contactInfo: string
+}
+interface Accommodation {
+    accommodationId: number
+    partner: Partner
+    name: string
+    accommodationType: string
+    description: string
+    city: string
+    address: string
+}
+
 interface Room {
     id: number
+    accommodation: Accommodation
     name: string
-    type: string
+    typeRoom: string
     price: number
-    rating: number
-    reviews: number
-    capacity: number
-    image: string
-    city: string
-    amenities: string[]
+    active: number
+    description: string
+    amenities: string
+    policy: string
+    roomCode: string
+    roomCategory: string
 }
+
+  const toVND = (value: any) => {
+    value = value.toString().replace(/\./g, "");
+    const formatted = new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "VND",
+    })
+      .format(value)
+      .replace("₫", "")
+      .trim();
+
+    return formatted;
+  }
+
+
 
 export default function BookingsPage() {
     const [searchText, setSearchText] = useState("")
     const [filterType, setFilterType] = useState("all")
     const [sortBy, setSortBy] = useState("popular")
     const [currentPage, setCurrentPage] = useState(1)
+    const { rooms } = useSelector((state: RootState) => state.room)
+    const dispatch = useDispatch();
 
-    const rooms: Room[] = [
-        {
-            id: 1,
-            name: "Phòng Deluxe Tiêu Chuẩn",
-            type: "Deluxe",
-            price: 189,
-            rating: 4.8,
-            reviews: 342,
-            capacity: 2,
-            image: "/luxury-restaurant-dining.jpg",
-            city: "TP. Hồ Chí Minh",
-            amenities: ["WiFi", "Điều hòa", "Tivi Smart"],
-        },
-        {
-            id: 2,
-            name: "Phòng Deluxe Premium",
-            type: "Deluxe",
-            price: 229,
-            rating: 4.9,
-            reviews: 289,
-            capacity: 2,
-            image: "/luxury-spa-relaxation.jpg",
-            city: "TP. Hồ Chí Minh",
-            amenities: ["WiFi", "Bàn làm việc", "Minibar"],
-        },
-        {
-            id: 3,
-            name: "Phòng Suite Sang Trọng",
-            type: "Suite",
-            price: 289,
-            rating: 4.9,
-            reviews: 156,
-            capacity: 3,
-            image: "/luxury-suite-room.jpg",
-            city: "TP. Hồ Chí Minh",
-            amenities: ["WiFi", "Phòng khách", "Bếp mini"],
-        },
-        {
-            id: 4,
-            name: "Phòng Suite Royal",
-            type: "Suite",
-            price: 349,
-            rating: 5.0,
-            reviews: 123,
-            capacity: 4,
-            image: "/family-room-hotel.jpg",
-            city: "TP. Hồ Chí Minh",
-            amenities: ["WiFi", "Phòng khách riêng", "Bếp đầy đủ"],
-        },
-        {
-            id: 5,
-            name: "Penthouse Hạng Nhất",
-            type: "Penthouse",
-            price: 589,
-            rating: 5.0,
-            reviews: 87,
-            capacity: 6,
-            image: "/deluxe-hotel-room.jpg",
-            city: "TP. Hồ Chí Minh",
-            amenities: ["WiFi", "View 360", "Jacuzzi"],
-        },
-        {
-            id: 6,
-            name: "Penthouse Vip",
-            type: "Penthouse",
-            price: 699,
-            rating: 5.0,
-            reviews: 64,
-            capacity: 8,
-            image: "/luxury-spa-relaxation.jpg",
-            city: "TP. Hồ Chí Minh",
-            amenities: ["WiFi", "View biển", "Private pool"],
-        },
-    ]
+    useEffect(() => {
+        dispatch(fetchRooms() as any)
+    }, [dispatch])
 
     const filteredRooms = useMemo(() => {
-        const result = rooms.filter((room) => {
+        const result = rooms.filter((room: Room) => {
             const matchesSearch =
                 room.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                room.city.toLowerCase().includes(searchText.toLowerCase())
+                room.accommodation.city.toLowerCase().includes(searchText.toLowerCase())
 
-            const matchesType = filterType === "all" || room.type === filterType
-
+            const matchesType = filterType === "all" || room.roomCategory === filterType
             return matchesSearch && matchesType
         })
 
         // Sort rooms
         if (sortBy === "price-low") {
-            result.sort((a, b) => a.price - b.price)
+            result.sort((a: Room, b: Room) => a.price - b.price)
         } else if (sortBy === "price-high") {
-            result.sort((a, b) => b.price - a.price)
+            result.sort((a: Room, b: Room) => b.price - a.price)
         } else if (sortBy === "rating") {
-            result.sort((a, b) => b.rating - a.rating)
+            // result.sort((a :Room, b :Room) => b.rating - a.rating)
         }
 
         return result
-    }, [searchText, filterType, sortBy])
+    }, [searchText, filterType, sortBy, rooms])
 
     const pageSize = 9
     const startIdx = (currentPage - 1) * pageSize
@@ -187,9 +162,9 @@ export default function BookingsPage() {
                                         style={{ width: "100%" }}
                                         options={[
                                             { label: "Tất cả loại phòng", value: "all" },
-                                            { label: "Deluxe", value: "Deluxe" },
-                                            { label: "Suite", value: "Suite" },
-                                            { label: "Penthouse", value: "Penthouse" },
+                                            { label: "Deluxe", value: "DLX" },
+                                            { label: "Suite", value: "SUT" },
+                                            { label: "Penthouse", value: "PEN" },
                                         ]}
                                     />
                                 </Col>
@@ -217,12 +192,11 @@ export default function BookingsPage() {
                         </div>
                     </div>
                 </section>
-
                 {/* Rooms Grid */}
                 <section className={styles.roomsGrid}>
                     <div className={styles.container}>
                         <Row gutter={[24, 24]}>
-                            {paginatedRooms.map((room) => (
+                            {paginatedRooms.map((room: Room) => (
                                 <Col key={room.id} xs={24} sm={12} lg={8}>
                                     <Card
                                         className={styles.roomCard}
@@ -230,12 +204,12 @@ export default function BookingsPage() {
                                         cover={
                                             <div className={styles.imageWrapper}>
                                                 <img
-                                                    src={room.image || "/placeholder.svg"}
+                                                    src={'/luxury-suite-room.jpg'}
                                                     alt={room.name}
                                                     style={{ width: "100%", height: "250px", objectFit: "cover" }}
                                                 />
                                                 <Badge
-                                                    count={`$${room.price}/đêm`}
+                                                    count={`${toVND(room.price)}/đêm`}
                                                     style={{
                                                         backgroundColor: "#b89968",
                                                         position: "absolute",
@@ -255,28 +229,28 @@ export default function BookingsPage() {
                                             <div className={styles.ratingSection}>
                                                 <span style={{ color: "#b89968", fontWeight: "bold" }}>
                                                     <Star size={14} style={{ display: "inline", marginRight: "4px" }} />
-                                                    {room.rating}
+                                                    {4.6}
                                                 </span>
                                                 <span style={{ color: "#999", fontSize: "12px", marginLeft: "8px" }}>
-                                                    ({room.reviews} đánh giá)
+                                                    ({356} đánh giá)
                                                 </span>
                                             </div>
 
                                             <Space orientation="vertical" size="small" style={{ width: "100%", marginTop: "12px" }}>
                                                 <div className={styles.detail}>
                                                     <Users size={14} />
-                                                    <span>Tối đa {room.capacity} khách</span>
+                                                    <span>Tối đa {room.typeRoom.split("_")[0]} khách</span>
                                                 </div>
                                                 <div className={styles.detail}>
                                                     <MapPin size={14} />
-                                                    <span>{room.city}</span>
+                                                    <span>{room.accommodation.city}</span>
                                                 </div>
                                             </Space>
 
                                             <div style={{ marginTop: "12px" }}>
                                                 <div style={{ fontSize: "12px", color: "#999", marginBottom: "8px" }}>Tiện nghi:</div>
                                                 <Space size="small" wrap>
-                                                    {room.amenities.map((amenity, idx) => (
+                                                    {room.amenities.split(",").map((amenity, idx) => (
                                                         <Badge key={idx} count={amenity} style={{ backgroundColor: "#f0f0f0", color: "#666" }} />
                                                     ))}
                                                 </Space>
@@ -299,18 +273,20 @@ export default function BookingsPage() {
                         </Row>
 
                         {/* Pagination */}
-                        <div style={{ marginTop: "32px", textAlign: "center" }}>
-                            <Pagination
-                                current={currentPage}
-                                pageSize={pageSize}
-                                total={filteredRooms.length}
-                                onChange={(page) => {
-                                    setCurrentPage(page)
-                                    window.scrollTo({ top: 0, behavior: "smooth" })
-                                }}
-                                style={{ color: "#333" }}
-                            />
-                        </div>
+                        {rooms.length > pageSize &&
+                            <div style={{ marginTop: "32px", textAlign: "center" }}>
+                                <Pagination
+                                    current={currentPage}
+                                    pageSize={pageSize}
+                                    total={filteredRooms.length}
+                                    onChange={(page) => {
+                                        setCurrentPage(page)
+                                        window.scrollTo({ top: 0, behavior: "smooth" })
+                                    }}
+                                    style={{ color: "#333" }}
+                                />
+                            </div>
+                        }
                     </div>
                 </section>
             </Content>

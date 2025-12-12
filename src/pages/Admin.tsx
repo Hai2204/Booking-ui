@@ -1,56 +1,89 @@
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar.tsx';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const { Content, Sider } = Layout;
 
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-      children: Array.from({ length: 3 }).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
+/** CẤU HÌNH MENU DUY NHẤT */
+const adminMenus = [
+  {
+    key: "1",
+    path: "/admin/users-management.html",
+    label: "User Management",
+    icon: <UserOutlined />
   },
-);
-items2.push({
-  key: `12`,
-  icon: React.createElement(UserOutlined),
-  label: `subnav na na na nâsn nấnns nấn`
-});
+  {
+    key: "2",
+    path: "/admin/rooms.html",
+    label: "Room Management",
+    icon: <LaptopOutlined />
+  },
+  {
+    key: "3",
+    path: "/admin/bookings.html",
+    label: "Booking Management",
+    icon: <NotificationOutlined />
+  },
+  {
+    key: "4",
+    path: "/admin/reports.html",
+    label: "Blog Management",
+    icon: <NotificationOutlined />
+  }
+];
 
-const App: React.FC = () => {
+/** TẠO MENU ITEMS */
+const menuItems: MenuProps['items'] = adminMenus.map(m => ({
+  key: m.key,
+  icon: m.icon,
+  label: <Link to={m.path}>{m.label}</Link>
+}));
+
+/** MAP PATH → KEY */
+const pathToKey = Object.fromEntries(adminMenus.map(m => [m.path, m.key]));
+
+
+const AdminLayout: React.FC = () => {
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+
+  const activeKey = pathToKey[location.pathname] || "1";
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-
   return (
     <Layout>
       <Navbar />
       <Layout style={{ minHeight: 'calc(100vh - 64px)' }}>
-        <Sider width={250} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items2} />
+
+        {/* SIDEBAR */}
+        <Sider
+          width={250}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+        >
+          <Menu
+            style={{ padding: 10 }}
+            theme="dark"
+            mode="inline"
+            selectedKeys={[activeKey]}
+            items={menuItems}
+          />
         </Sider>
+
+        {/* CONTENT */}
         <Layout style={{ padding: '0 20px 24px' }}>
           <Breadcrumb
-            items={[{ title: 'Home' }, { title: 'List' }, { title: 'App' }]}
+            items={[{ title: 'Home' }, { title: 'Admin' }]}
             style={{ margin: '16px 0', color: "#b89968", fontWeight: "bold" }}
           />
+
           <Content
             style={{
               padding: 24,
@@ -60,7 +93,7 @@ const App: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            Content
+            <Outlet />
           </Content>
         </Layout>
       </Layout>
@@ -68,4 +101,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default AdminLayout;

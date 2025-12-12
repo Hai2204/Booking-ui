@@ -2,21 +2,22 @@ import { Layout, Avatar, Dropdown } from "antd"
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { logout } from "../redux/slices/authSlice"
+import { logout } from "@/redux/slices/authSlice"
+import type { RootState } from "@/redux/store"
 
 const { Header } = Layout
 
 export default function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { user } = useSelector((state) => state.auth)
+  const { user } = useSelector((state :RootState) => state.auth)
 
   const handleLogout = () => {
     dispatch(logout())
     navigate("/login")
   }
 
-  const menuItems = [
+  const menuItems : any = [
     {
       key: "profile",
       icon: <UserOutlined />,

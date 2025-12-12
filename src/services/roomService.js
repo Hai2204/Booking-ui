@@ -1,8 +1,13 @@
 import api from "./api"
 
 export const roomService = {
-  getAllRooms: async () => {
-    const response = await api.get("/api/rooms")
+  getAllRooms: async (payload) => {
+    const response = await api.get("/api/rooms", {
+      params: {
+        category: payload?.category,
+        limit: payload?.limit
+      }
+    })
     return response.data
   },
 

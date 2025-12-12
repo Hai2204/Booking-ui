@@ -8,9 +8,9 @@ const initialState = {
   error: null,
 }
 
-export const fetchRooms = createAsyncThunk("room/fetchRooms", async (_, { rejectWithValue }) => {
+export const fetchRooms = createAsyncThunk("room/fetchRooms", async (payload, { rejectWithValue }) => {
   try {
-    const response = await roomService.getAllRooms()
+    const response = await roomService.getAllRooms(payload)
     if (response.success) {
       return response.data
     }

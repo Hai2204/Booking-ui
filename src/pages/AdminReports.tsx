@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { fetchAllBookings } from "../redux/slices/bookingSlice"
 import { fetchRooms } from "../redux/slices/roomSlice"
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar.tsx"
 import dayjs from "dayjs"
 
 const { Content } = Layout

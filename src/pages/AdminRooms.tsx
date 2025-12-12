@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../redux/store"
 import { fetchRooms, createRoom, updateRoom, deleteRoom } from "../redux/slices/roomSlice"
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar.tsx"
 
 const { Content } = Layout
 
