@@ -42,7 +42,7 @@ interface Room {
     id: number
     accommodation: Accommodation
     name: string
-    typeRoom: string
+    typeRoom: number
     price: number
     active: number
     description: string
@@ -239,7 +239,7 @@ export default function BookingsPage() {
                                             <Space orientation="vertical" size="small" style={{ width: "100%", marginTop: "12px" }}>
                                                 <div className={styles.detail}>
                                                     <Users size={14} />
-                                                    <span>Tối đa {room.typeRoom.split("_")[0]} khách</span>
+                                                    <span>Tối đa {room.typeRoom} khách</span>
                                                 </div>
                                                 <div className={styles.detail}>
                                                     <MapPin size={14} />

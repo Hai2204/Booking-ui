@@ -42,7 +42,7 @@ interface Room {
   id: number
   accommodation: Accommodation
   name: string
-  typeRoom: string
+  typeRoom: number
   price: number
   active: number
   description: string

@@ -1,14 +1,42 @@
 "use client"
 
-import { Layout, Table, Button, Modal, Form, Input, InputNumber, Select, message, Space, Tag } from "antd"
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
+import { Button, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import type { RootState } from "../redux/store"
-import { fetchRooms, createRoom, updateRoom, deleteRoom } from "../redux/slices/roomSlice"
-import Navbar from "../components/Navbar.tsx"
+import { createRoom, deleteRoom, fetchRooms, updateRoom } from "@/redux/slices/roomSlice"
+import type { RootState } from "@/redux/store"
 
 const { Content } = Layout
+
+
+interface Partner {
+  partnerId: number
+  name: string
+  contactInfo: string
+}
+interface Accommodation {
+  accommodationId: number
+  partner: Partner
+  name: string
+  accommodationType: string
+  description: string
+  city: string
+  address: string
+}
+
+interface Room {
+  id: number
+  accommodation: Accommodation
+  name: string
+  typeRoom: number
+  price: number
+  active: number
+  description: string
+  amenities: string
+  policy: string,
+  roomCategory: string,
+}
 
 export default function AdminRooms() {
   const dispatch = useDispatch()
@@ -27,11 +55,11 @@ export default function AdminRooms() {
     setIsModalVisible(true)
   }
 
-  const handleEdit = (room: any) => {
+  const handleEdit = (room: Room) => {
     setEditingRoom(room)
     form.setFieldsValue({
       ...room,
-      amenities: room.amenities?.join(",") || "",
+      amenities: room.amenities || "",
     })
     setIsModalVisible(true)
   }
@@ -53,27 +81,35 @@ export default function AdminRooms() {
   }
 
   const onFinish = async (values: any) => {
-    const amenities = values.amenities ? values.amenities.split(",").map((a: string) => a.trim()) : []
-
-    const roomData = {
-      ...values,
-      amenities,
-    }
-
+    console.log(values);
+    return;
     if (editingRoom) {
-      const result = await dispatch(updateRoom({ roomId: editingRoom.id, payload: roomData }) as any)
+      const result = await dispatch(updateRoom({ roomId: editingRoom.id, payload: values }) as any)
       if (result.payload) {
         message.success("Cập nhật phòng thành công")
         setIsModalVisible(false)
       }
     } else {
-      const result = await dispatch(createRoom(roomData) as any)
+      const result = await dispatch(createRoom(values) as any)
       if (result.payload) {
         message.success("Thêm phòng thành công")
         setIsModalVisible(false)
         form.resetFields()
       }
     }
+  }
+
+  const toVND = (value: any) => {
+    value = value.toString().replace(/\./g, "");
+    const formatted = new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "VND",
+    })
+      .format(value)
+      .replace("₫", "")
+      .trim();
+
+    return formatted;
   }
 
   const columns = [
@@ -85,29 +121,30 @@ export default function AdminRooms() {
     },
     {
       title: "Loại",
-      dataIndex: "type",
-      key: "type",
-      render: (type: string) => <Tag color="blue">{type}</Tag>,
+      dataIndex: "roomCategory",
+      key: "roomCategory",
+      render: (roomCategory: string) => <Tag color="blue">{roomCategory}</Tag>,
     },
     {
       title: "Giá / đêm",
       dataIndex: "price",
       key: "price",
-      render: (price: number) => <span className="font-semibold text-indigo-600">${price}</span>,
+      render: (price: number) => <span className="font-semibold text-indigo-600">{toVND(price)}</span>,
     },
     {
       title: "Sức chứa",
-      dataIndex: "capacity",
-      key: "capacity",
+      dataIndex: "typeRoom",
+      key: "typeRoom",
       align: "center" as const,
+      render: (typeRoom: number) => <Tag color="blue">{typeRoom} Người</Tag>,
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      render: (status: string) => (
-        <Tag color={status === "available" ? "green" : "red"}>
-          {status === "available" ? "Sẵn sàng" : "Không sẵn sàng"}
+      dataIndex: "active",
+      key: "active",
+      render: (active: number) => (
+        <Tag color={active == 1 ? "green" : "red"}>
+          {active == 1 ? "Sẵn sàng" : "Không sẵn sàng"}
         </Tag>
       ),
     },
@@ -129,7 +166,6 @@ export default function AdminRooms() {
 
   return (
     <Layout className="min-h-screen bg-gray-50">
-      <Navbar />
       <Content className="p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -158,7 +194,8 @@ export default function AdminRooms() {
             open={isModalVisible}
             onOk={() => form.submit()}
             onCancel={() => setIsModalVisible(false)}
-            width={600}
+            style={{ top: 20 }}
+            width={650}
           >
             <Form form={form} layout="vertical" onFinish={onFinish} className="mt-4">
               <Form.Item name="name" label="Tên phòng" rules={[{ required: true, message: "Vui lòng nhập tên phòng" }]}>
@@ -166,28 +203,27 @@ export default function AdminRooms() {
               </Form.Item>
 
               <Form.Item
-                name="type"
+                name="roomCategory"
                 label="Loại phòng"
                 rules={[{ required: true, message: "Vui lòng chọn loại phòng" }]}
               >
                 <Select placeholder="Chọn loại phòng">
-                  <Select.Option value="single">Phòng đơn</Select.Option>
-                  <Select.Option value="double">Phòng đôi</Select.Option>
-                  <Select.Option value="suite">Phòng suite</Select.Option>
-                  <Select.Option value="deluxe">Phòng deluxe</Select.Option>
+                  <Select.Option value="DLX">Phòng Deluxe</Select.Option>
+                  <Select.Option value="SUT">Phòng suite</Select.Option>
+                  <Select.Option value="PEN">Phòng Penthouse</Select.Option>
                 </Select>
               </Form.Item>
 
               <Form.Item
                 name="price"
-                label="Giá / đêm (USD)"
+                label="Giá / đêm (VND)"
                 rules={[{ required: true, message: "Vui lòng nhập giá" }]}
               >
                 <InputNumber min={0} placeholder="VD: 100" />
               </Form.Item>
 
               <Form.Item
-                name="capacity"
+                name="typeRoom"
                 label="Sức chứa (khách)"
                 rules={[{ required: true, message: "Vui lòng nhập sức chứa" }]}
               >
@@ -195,22 +231,17 @@ export default function AdminRooms() {
               </Form.Item>
 
               <Form.Item name="description" label="Mô tả" rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}>
-                <Input.TextArea rows={3} placeholder="Mô tả chi tiết về phòng" />
+                <Input.TextArea rows={4} placeholder="Mô tả chi tiết về phòng" />
               </Form.Item>
 
               <Form.Item name="amenities" label="Tiện nghi (cách nhau bằng dấu phẩy)" tooltip="VD: WiFi, TV, Điều hòa">
                 <Input.TextArea rows={2} placeholder="WiFi, TV, Điều hòa, Nóng lạnh" />
               </Form.Item>
 
-              <Form.Item name="image" label="URL hình ảnh">
-                <Input placeholder="https://example.com/image.jpg" />
-              </Form.Item>
-
-              <Form.Item name="status" label="Trạng thái" initialValue="available">
+              <Form.Item name="active" label="Trạng thái">
                 <Select>
-                  <Select.Option value="available">Sẵn sàng</Select.Option>
-                  <Select.Option value="booked">Đã đặt</Select.Option>
-                  <Select.Option value="maintenance">Bảo trì</Select.Option>
+                  <Select.Option value={1}>Sẵn sàng</Select.Option>
+                  <Select.Option value={0}>Không sẵn sàng</Select.Option>
                 </Select>
               </Form.Item>
             </Form>

@@ -80,7 +80,7 @@ const AdminLayout: React.FC = () => {
         {/* CONTENT */}
         <Layout style={{ padding: '0 20px 24px' }}>
           <Breadcrumb
-            items={[{ title: 'Home' }, { title: 'Admin' }]}
+            items={[]}
             style={{ margin: '16px 0', color: "#b89968", fontWeight: "bold" }}
           />
 
