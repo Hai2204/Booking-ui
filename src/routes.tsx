@@ -1,8 +1,8 @@
 import AccessDenied from "@/pages/AccessDenied";
 import Admin from "@/pages/Admin";
-import AdminBookings from "@/pages/AdminBookings";
+import AdminBookings from "@/pages/Admin/BookingManagement";
 import AdminReports from "@/pages/AdminReports";
-import AdminRooms from "@/pages/AdminRooms";
+import AdminRooms from "@/pages/Admin/RoomManagement";
 import Blogs from "@/pages/Blog";
 import BlogItem from "@/pages/Blog/BlogId";
 import MyBookings from "@/pages/Bookings/Bookings";
@@ -13,7 +13,7 @@ import NotFound from "@/pages/NotFound";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import BookingDetail from "@/pages/RoomDetail";
-import AdminUsers from "@/pages/UserManagement";
+import AdminUsers from "@/pages/Admin/UserManagement";
 
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
@@ -55,11 +55,12 @@ const routes: RouteItem[] = [
     protected: true,
     requiredRole: "ROLE_ADMIN",
     children: [
-      { path: "", element: <Navigate to="/admin/users-management.html" replace /> },           // /admin
-      { path: "users-management.html", element: <AdminUsers /> },           // /admin
-      { path: "rooms.html", element: <AdminRooms /> },      // /admin/rooms
-      { path: "bookings.html", element: <AdminBookings /> },// /admin/bookings
-      { path: "reports.html", element: <AdminReports /> },  // /admin/reports
+      { path: "", element: <Navigate to="/admin/users-management.html" replace /> },        
+      { path: "users-management.html", element: <AdminUsers /> },        
+      { path: "rooms.html", element: <AdminRooms /> },   
+      { path: "bookings.html", element: <AdminBookings /> },
+      { path: "reports.html", element: <AdminReports /> }, 
+      { path: "blogs.html", element: <AdminReports /> },  
     ],
   },
 

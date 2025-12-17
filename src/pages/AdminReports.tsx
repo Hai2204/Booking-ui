@@ -1,29 +1,28 @@
 "use client"
 
-import { Layout, Card, Row, Col, Button, DatePicker, Select, Space, Table, message, Statistic } from "antd"
-import { DownloadOutlined, PrinterOutlined, BarChartOutlined } from "@ant-design/icons"
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts"
+import { BarChartOutlined, DownloadOutlined, PrinterOutlined } from "@ant-design/icons"
+import { Button, Card, Col, DatePicker, Layout, message, Row, Select, Space, Statistic, Table } from "antd"
+import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import type { RootState } from "../redux/store"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts"
 import { fetchAllBookings } from "../redux/slices/bookingSlice"
-import { fetchRooms } from "../redux/slices/roomSlice"
-import Navbar from "../components/Navbar.tsx"
-import dayjs from "dayjs"
+import { fetchRooms } from "@/redux/slices/roomSlice"
+import type { RootState } from "@/redux/store"
 
 const { Content } = Layout
 const COLORS = ["#1890ff", "#52c41a", "#faad14", "#f5222d", "#722ed1"]

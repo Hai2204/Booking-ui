@@ -1,0 +1,17 @@
+h1.image-text{
+    font-size: 15rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+    background-image: url(https://helpx.adobe.com/content/dam/help/en/mobile-apps/how-to/animate-ink-drawing-adobe-capture/jcr%3Acontent/main-pars/image_635913194/animate-ink-drawing-adobe-capture_1408x792.jpg.img.jpg);
+    background-size: cover;
+    background-position: center;
+    background-clip: text;
+    color: transparent;
+    animation: animate 30s linear infinite;
+}
+
+@keyframes animate {
+    to {
+        background-position-x: -500px;
+    }
+}

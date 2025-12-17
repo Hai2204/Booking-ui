@@ -4,20 +4,39 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { logout } from "@/redux/slices/authSlice"
 import type { RootState } from "@/redux/store"
+import * as motion from "motion/react-client";
+import { AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react"
 
-const { Header } = Layout
+const { Header } = Layout;
+
+const texts = [
+  "Quản lý khách hàng",
+  "Quản lý phòng",
+  "Booking"
+];
 
 export default function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { user } = useSelector((state :RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.auth)
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % texts.length);
+    }, 6500);
+    return () => clearInterval(timer);
+  }, []);
+
 
   const handleLogout = () => {
     dispatch(logout())
     navigate("/login")
   }
 
-  const menuItems : any = [
+  const menuItems: any = [
     {
       key: "profile",
       icon: <UserOutlined />,
@@ -46,8 +65,19 @@ export default function Navbar() {
       }}
     >
       <div className={"logo"}>
-
-      <div style={{ fontSize: "24px", fontWeight: "bold", color: "#1a472a" }}>Booking Hainv</div>
+        <AnimatePresence mode="wait">
+            <motion.h1
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 1 }}
+              className="auto-text"
+              style={{ fontWeight: "bold" }}
+            >
+              {texts[index]}
+            </motion.h1>
+          </AnimatePresence>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "16px", fontSize: "20px", fontWeight: "bold", color: "#1a472a" }}>
         <span>{user?.fullName}</span>

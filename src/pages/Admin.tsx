@@ -29,8 +29,14 @@ const adminMenus = [
   },
   {
     key: "4",
-    path: "/admin/reports.html",
+    path: "/admin/blogs.html",
     label: "Blog Management",
+    icon: <ScheduleOutlined />
+  },
+  {
+    key: "5",
+    path: "/admin/reports.html",
+    label: "Report Management",
     icon: <ScheduleOutlined />
   }
 ];

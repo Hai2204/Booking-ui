@@ -42,7 +42,7 @@ export default function AdminRooms() {
   const dispatch = useDispatch()
   const { rooms, isLoading } = useSelector((state: RootState) => state.room)
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [editingRoom, setEditingRoom] = useState<any>(null)
+  const [editingRoom, setEditingRoom] = useState<Room | null>(null)
   const [form] = Form.useForm()
 
   useEffect(() => {
