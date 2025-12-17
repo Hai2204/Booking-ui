@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import Navbar from "../../components/Navbar.tsx"
 import { createBooking } from "../../redux/slices/bookingSlice"
-import type { RootState } from "../../redux/store"
+import type { RootState } from "../../redux/store.ts"
 import { paymentService } from "../../services/paymentService"
 import { roomService } from "../../services/roomService"
 

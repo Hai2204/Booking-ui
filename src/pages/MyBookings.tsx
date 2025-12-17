@@ -4,7 +4,7 @@ import { Layout, Table, Button, Modal, message, Spin, Empty, Space, Tag } from "
 import { DeleteOutlined, EyeOutlined, CalendarOutlined } from "@ant-design/icons"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import type { RootState } from "../redux/store"
+import type { RootState } from "../redux/store.ts"
 import { fetchUserBookings, cancelBooking } from "../redux/slices/bookingSlice"
 import Navbar from "../components/Navbar.tsx"
 

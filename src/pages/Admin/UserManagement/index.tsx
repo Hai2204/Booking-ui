@@ -1,130 +1,128 @@
-import { IdcardOutlined, SyncOutlined } from '@ant-design/icons';
-import type { TableProps } from 'antd';
+import { IdcardOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Flex, Space, Table, Tag } from 'antd';
-import * as motion from "motion/react-client";
-import React from 'react';
+import type { ColumnsType } from 'antd/es/table';
+import * as motion from 'motion/react-client';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { allUsers, fetchUsers } from '@/redux/slices/userSlice';
 import './index.css';
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+export interface UserCustomerModal {
+  username: string;
+  fullName: string;
+  email?: string | null;
+  phone?: string | null;
+  age?: number | null;
+  nationalId?: string | null;
+  roleName: string;
 }
 
-
-
-const columns: TableProps<DataType>['columns'] = [
+const columns: ColumnsType<UserCustomerModal> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
+    title: 'Username',
+    dataIndex: 'username',
+    key: 'username',
+  },
+  {
+    title: 'Full Name',
+    dataIndex: 'fullName',
+    key: 'fullName',
+  },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    render: (v) => v ?? '--',
+  },
+  {
+    title: 'Phone',
+    dataIndex: 'phone',
+    key: 'phone',
+    render: (v) => v ?? '--',
   },
   {
     title: 'Age',
     dataIndex: 'age',
     key: 'age',
+    render: (v) => v ?? '--',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'National ID',
+    dataIndex: 'nationalId',
+    key: 'nationalId',
+    render: (v) => v ?? '--',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <Flex gap="small" align="center" wrap>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </Flex>
-    ),
+    title: 'Role',
+    dataIndex: 'roleName',
+    key: 'roleName',
+    render: (role) => <Tag color="blue">{role}</Tag>,
   },
   {
     title: 'Action',
     key: 'action',
     render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+      <Space>
+        <a>Edit</a>
+        <a style={{ color: 'red' }}>Delete</a>
       </Space>
     ),
   },
 ];
 
 
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const listUsers = useSelector(allUsers);
 
-  return <>
-    <motion.header
-    >
-      <Flex gap="small" justify='space-between' align="center" style={{ padding: '0 30px 0 30px' }}>
-        <motion.h1
-          style={{ fontSize: 22 }}
+  useEffect(() => {
+    dispatch(fetchUsers() as any);
+  }, [dispatch]);
+
+  return (
+    <>
+      {/* HEADER */}
+      <motion.header>
+        <Flex
+          gap="small"
+          justify="space-between"
+          align="center"
+          style={{ padding: '0 30px' }}
         >
-          <IdcardOutlined style={{ marginRight: 8 }} />
-          My App
-        </motion.h1>
-        <motion.div
-        >
-          <Button
-            type="primary"
-            loading={false && { icon: <SyncOutlined spin /> }}
-          >
-            Create User
-          </Button>
-        </motion.div>
-      </Flex>
+          <motion.h1 style={{ fontSize: 22 }}>
+            <IdcardOutlined style={{ marginRight: 8 }} />
+            My App
+          </motion.h1>
 
+          <motion.div>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+            >
+              Create User
+            </Button>
+          </motion.div>
+        </Flex>
+      </motion.header>
 
-    </motion.header>
-    <Divider />
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-    >
+      <Divider />
 
-      <Table columns={columns} dataSource={data} />
-    </motion.div>
-  </>;
+      {/* TABLE */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+      >
+        <Table<UserCustomerModal>
+          rowKey="username"
+          columns={columns}
+          dataSource={listUsers}
+          pagination={{ pageSize: 10 }}
+        />
+      </motion.div>
+    </>
+  );
 };
 
 export default App;

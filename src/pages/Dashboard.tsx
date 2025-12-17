@@ -9,7 +9,7 @@ import Navbar from "../components/Navbar.tsx/index.js"
 import CarouselComponent from "../components/CarouselComponent.jsx"
 import { logout } from "../redux/slices/authSlice"
 import { fetchRooms } from "../redux/slices/roomSlice"
-import type { RootState } from "../redux/store"
+import type { RootState } from "../redux/store.js"
 
 const { Content } = Layout
 
