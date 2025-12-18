@@ -14,6 +14,13 @@ export interface User {
   roleName: string;
 }
 
+export interface UserResponse {
+  id: number;
+  username: string;
+  fullName: string;
+}
+
+
 export interface GetUsersParams {
   category?: string
   limit?: number
@@ -46,12 +53,12 @@ export const userService = {
 
   createUser: async (
     payload: Partial<User>
-  ): Promise<ApiResponse<User>> => {
+  ): Promise<ApiResponse<UserResponse>> => {
     const response = await api.post<ApiResponse<User>>(
-      "/api/user",
+      "/user",
       payload
     )
-    return response.data
+    return response.data;
   },
 
   updateUser: async (

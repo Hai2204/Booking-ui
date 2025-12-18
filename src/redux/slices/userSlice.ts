@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import { userService } from "@/services/userService"
+import { ApiResponse, userService } from "@/services/userService"
 import type { RootState } from "@/redux/store"
+import { UserCustomerModal } from "@/pages/Admin/UserManagement";
+import { log } from "console";
 
 export interface User {
   username: string;
@@ -11,6 +13,13 @@ export interface User {
   nationalId?: string | null;
   roleName: string;
 }
+export interface UserResponse {
+  id: number;
+  username: string;
+  fullName: string;
+}
+
+
 
 export interface UserState {
   users: User[]
@@ -43,6 +52,24 @@ export const fetchUsers = createAsyncThunk<
       return rejectWithValue(response?.message || "Fetch users failed")
     } catch (error: any) {
       return rejectWithValue(error.message || "Unknown error")
+    }
+  }
+)
+export const createUser = createAsyncThunk<
+  UserResponse,            
+  UserCustomerModal,                    
+  { rejectValue: string }
+>(
+  "user/createUser",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await userService.createUser(payload) as ApiResponse<UserResponse>
+      if (response?.success) {
+        return response.data as UserResponse
+      }
+      return rejectWithValue(response.message || "Fetch users failed")
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message || error.response || "Unknown error")
     }
   }
 )
