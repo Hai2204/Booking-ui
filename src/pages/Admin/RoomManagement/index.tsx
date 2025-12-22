@@ -2,8 +2,9 @@
 
 import { createRoom, deleteRoom, fetchRooms, updateRoom } from "@/redux/slices/roomSlice"
 import type { RootState } from "@/redux/store"
+import { accommodationService } from "@/services/accommodation"
 import { DeleteOutlined, EditOutlined, IdcardOutlined, PlusOutlined, SyncOutlined } from "@ant-design/icons"
-import { Button, Divider, Flex, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
+import { Button, Checkbox, Divider, Flex, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
 import * as motion from "motion/react-client"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -45,22 +46,37 @@ export default function AdminRooms() {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [editingRoom, setEditingRoom] = useState<Room | null>(null)
     const [form] = Form.useForm()
+    const [accommodations, setAccommodations] = useState<Accommodation[]>([])
+
+    const fetchAccommodations = async () => {
+        try {
+            const res = await accommodationService.getAllAccommodations()
+            setAccommodations(res.data || []);
+            console.log(12, res.data);
+
+        } catch (e) {
+            message.error("Không tải được danh sách accommodation")
+        }
+    }
 
     useEffect(() => {
         dispatch(fetchRooms() as any)
     }, [dispatch])
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         setEditingRoom(null)
         form.resetFields()
-        setIsModalVisible(true)
+        await fetchAccommodations();
+        setIsModalVisible(true);
     }
 
-    const handleEdit = (room: Room) => {
+    const handleEdit = async (room: Room) => {
         setEditingRoom(room)
+        await fetchAccommodations();
         form.setFieldsValue({
             ...room,
             amenities: room.amenities || "",
+            accommodationId: room.accommodation.accommodationId,
         })
         setIsModalVisible(true)
     }
@@ -82,20 +98,26 @@ export default function AdminRooms() {
     }
 
     const onFinish = async (values: any) => {
-        console.log(values);
-        return;
+
         if (editingRoom) {
+            console.log(values);
+            return;
             const result = await dispatch(updateRoom({ roomId: editingRoom.id, payload: values }) as any)
             if (result.payload) {
                 message.success("Cập nhật phòng thành công")
                 setIsModalVisible(false)
             }
         } else {
-            const result = await dispatch(createRoom(values) as any)
-            if (result.payload) {
+            const result = await dispatch(createRoom(values) as any);
+
+            console.log(123, result);
+
+            if (result.payload?.id) {
                 message.success("Thêm phòng thành công")
                 setIsModalVisible(false)
                 form.resetFields()
+            } else {
+                message.error(result?.payload || "Thêm phòng thất bại")
             }
         }
     }
@@ -220,10 +242,23 @@ export default function AdminRooms() {
                     width={650}
                 >
                     <Form form={form} layout="vertical" onFinish={onFinish} className="mt-4">
-                        <Form.Item name="name" label="Tên phòng" rules={[{ required: true, message: "Vui lòng nhập tên phòng" }]}>
-                            <Input placeholder="VD: Phòng 101" />
-                        </Form.Item>
 
+                        <Flex gap="large">
+                            <Form.Item name="name" label="Tên phòng" rules={[{ required: true, message: "Vui lòng nhập tên phòng" }]}>
+                                <Input placeholder="VD: Phòng 101" />
+                            </Form.Item>
+                            <Form.Item name="roomCode" label="Mã phòng" rules={[{ required: true, message: "Vui lòng nhập mã phòng" }]}>
+                                <Input placeholder="VD: P101" />
+                            </Form.Item>
+                        </Flex>
+
+                        <Form.Item name="accommodationId" label="accommodation" rules={[{ required: true, message: "Vui lòng chọn accommodation" }]}>
+                            <Select
+                                placeholder="Chọn loại"
+                                options={accommodations.map((item) => ({ label: item.name, value: item.accommodationId }))}
+                            />
+
+                        </Form.Item>
                         <Form.Item
                             name="roomCategory"
                             label="Loại phòng"
@@ -236,21 +271,32 @@ export default function AdminRooms() {
                             </Select>
                         </Form.Item>
 
-                        <Form.Item
-                            name="price"
-                            label="Giá / đêm (VND)"
-                            rules={[{ required: true, message: "Vui lòng nhập giá" }]}
-                        >
-                            <InputNumber min={0} placeholder="VD: 100" />
-                        </Form.Item>
+                        <Flex gap="large" style={{ alignItems: "self-end" }}>
 
-                        <Form.Item
-                            name="typeRoom"
-                            label="Sức chứa (khách)"
-                            rules={[{ required: true, message: "Vui lòng nhập sức chứa" }]}
-                        >
-                            <InputNumber min={1} placeholder="VD: 2" />
-                        </Form.Item>
+                            <Form.Item
+                                name="price"
+                                label="Giá / đêm (VND)"
+                                rules={[{ required: true, message: "Vui lòng nhập giá" }]}
+                            >
+                                <InputNumber min={0} placeholder="VD: 100" />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="typeRoom"
+                                label="Sức chứa (khách)"
+                                rules={[{ required: true, message: "Vui lòng nhập sức chứa" }]}
+                            >
+                                <InputNumber min={1} placeholder="VD: 2" />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="active"
+                                valuePropName="checked"
+                                getValueFromEvent={(e) => e.target.checked ? 1 : 0}
+                            >
+                                <Checkbox>Trạng thái</Checkbox>
+                            </Form.Item>
+                        </Flex>
 
                         <Form.Item name="description" label="Mô tả" rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}>
                             <Input.TextArea rows={4} placeholder="Mô tả chi tiết về phòng" />
@@ -259,12 +305,8 @@ export default function AdminRooms() {
                         <Form.Item name="amenities" label="Tiện nghi (cách nhau bằng dấu phẩy)" tooltip="VD: WiFi, TV, Điều hòa">
                             <Input.TextArea rows={2} placeholder="WiFi, TV, Điều hòa, Nóng lạnh" />
                         </Form.Item>
-
-                        <Form.Item name="active" label="Trạng thái">
-                            <Select>
-                                <Select.Option value={1}>Sẵn sàng</Select.Option>
-                                <Select.Option value={0}>Không sẵn sàng</Select.Option>
-                            </Select>
+                        <Form.Item name="policy" label="Chính sách">
+                            <Input.TextArea rows={2} placeholder="Hoàn tiền, hủy phòng..." />
                         </Form.Item>
                     </Form>
                 </Modal>

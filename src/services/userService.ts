@@ -1,4 +1,5 @@
 import api from "./api"
+import { ApiResponse } from "./commonType";
 
 /* =======================
    Types
@@ -26,11 +27,6 @@ export interface GetUsersParams {
   limit?: number
 }
 
-export interface ApiResponse<T> {
-  success: boolean
-  data: T
-  message?: string
-}
 
 /* =======================
    Service

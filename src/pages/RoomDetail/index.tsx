@@ -191,7 +191,7 @@ export default function BookingDetailPage() {
                                 <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "12px", color: "#1a472a" }}>
                                     Mô tả phòng
                                 </h3>
-                                <p style={{ color: "#666", lineHeight: "1.8", marginBottom: "16px" }}>{room.accommodation.description}</p>
+                                <p style={{ color: "#666", lineHeight: "1.8", marginBottom: "16px" }}>{room.description}</p>
 
                                 <Divider />
 
