@@ -17,8 +17,10 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPartners() as any);
-  }, [dispatch]);
+    if (mode === "view") {
+      dispatch(fetchPartners() as any);
+    }
+  }, [dispatch, mode]);
 
 
   const columns = [
@@ -98,7 +100,7 @@ const App: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
           >
             {
-              mode !== "view" ? <Form data={editingItem} mode={mode} /> : <Table
+              mode !== "view" ? <Form data={editingItem} mode={mode} setMode={setMode} /> : <Table
                 dataSource={partners}
                 columns={columns}
                 rowKey="partnerId"

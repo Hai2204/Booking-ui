@@ -1,12 +1,23 @@
 import React, { useEffect } from 'react';
-import { Button, Flex, Form, Input, Space } from 'antd';
+import { Button, Flex, Form, Input, message, Space } from 'antd';
 import { PlusOutlined, SaveOutlined, SyncOutlined } from '@ant-design/icons';
+import { partnerService } from '@/services/partnerService';
 
-const App: React.FC<{ data: Partner | null, mode: Mode }> = ({ data, mode }) => {
+const App: React.FC<{ data: Partner | null, mode: Mode, setMode: React.Dispatch<React.SetStateAction<Mode>> }> = ({ data, mode, setMode }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log('Received values:', values);
+  const onFinish = (values: Partner) => {
+    (mode === "create" ? partnerService.createPartner(values) : partnerService.updatePartner(values)).then((response) => {
+      if (response.success && response?.data?.partnerId) {
+        form.resetFields();
+        message.success("thành công")
+        setMode("view");
+      } else {
+        message.error("Thất bại")
+      }
+    }).catch((error) => {
+      message.error(error?.message)
+    });
   };
 
   useEffect(() => {
@@ -38,9 +49,9 @@ const App: React.FC<{ data: Partner | null, mode: Mode }> = ({ data, mode }) => 
           </Form.Item>
           <Form.Item name="contactInfo" label="Liên hệ" rules={[{ required: true, message: "Vui lòng nhập " }, { type: "email", message: "Email không đúng định dạng" }, {
             validator: (_, value) =>
-              value?.endsWith("@gmail.com")
+              value?.endsWith("@gmail.com") || value?.endsWith(".vn")
                 ? Promise.resolve()
-                : Promise.reject(new Error("Email kết thúc phải là @gmail.com")),
+                : Promise.reject(new Error("Email kết thúc phải là @gmail.com hoặc .vn")),
           }]}>
             <Input type='email' placeholder="VD: contact@company.com" />
           </Form.Item>

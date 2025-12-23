@@ -11,4 +11,12 @@ export const partnerService = {
     })
     return response.data as ApiResponse<Partner[]>
   },
+  createPartner: async (payload: Partner) => {
+    const response = await api.post("/api/partner", payload)
+    return response.data as ApiResponse<Partner>
+  },
+  updatePartner: async (payload: Partner) => {
+    const response = await api.put("/api/partner", payload)
+    return response.data as ApiResponse<Partner>
+  },
 }
