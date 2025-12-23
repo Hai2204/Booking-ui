@@ -14,6 +14,7 @@ import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import BookingDetail from "@/pages/RoomDetail";
 import AdminUsers from "@/pages/Admin/UserManagement";
+import Partner from "@/pages/Admin/Partner";
 
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
@@ -58,6 +59,7 @@ const routes: RouteItem[] = [
       { path: "", element: <Navigate to="/admin/users-management.html" replace /> },        
       { path: "users-management.html", element: <AdminUsers /> },        
       { path: "rooms.html", element: <AdminRooms /> },   
+      { path: "partners.html", element: <Partner /> },   
       { path: "bookings.html", element: <AdminBookings /> },
       { path: "reports.html", element: <AdminReports /> }, 
       { path: "blogs.html", element: <AdminReports /> },  

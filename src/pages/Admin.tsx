@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar.tsx';
-import { AccountBookOutlined, HomeOutlined, ScheduleOutlined, UserOutlined } from '@ant-design/icons';
+import { AccountBookOutlined, HomeOutlined, PicLeftOutlined, ScheduleOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
@@ -28,6 +28,12 @@ const adminMenus = [
     icon: <AccountBookOutlined />
   },
   {
+    key: "6",
+    path: "/admin/partners.html",
+    label: "Partner Management",
+    icon: <PicLeftOutlined  />
+  },
+  {
     key: "4",
     path: "/admin/blogs.html",
     label: "Blog Management",
@@ -38,7 +44,7 @@ const adminMenus = [
     path: "/admin/reports.html",
     label: "Report Management",
     icon: <ScheduleOutlined />
-  }
+  },
 ];
 
 /** TẠO MENU ITEMS */

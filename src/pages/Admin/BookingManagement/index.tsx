@@ -4,13 +4,6 @@ import { Button, Divider, Flex, Space, Table, Tag } from 'antd';
 import * as motion from "motion/react-client";
 import React from 'react';
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
 
 const columns: TableProps<DataType>['columns'] = [
   {

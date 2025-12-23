@@ -51,7 +51,6 @@ interface Room {
 }
 
 export default function Home() {
-  const [visibleSections, setVisibleSections] = useState({})
   const [scrollTop, setScrollTop] = useState(false)
   const [key, setKey] = useState("DLX")
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -137,26 +136,6 @@ export default function Home() {
     { icon: "🎭", name: "Entertainment", desc: "Giải trí đa dạng" },
   ]
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleSections((prev) => ({
-              ...prev,
-              [entry.target.id]: true,
-            }))
-          }
-        })
-      },
-      { threshold: 0.1 },
-    )
-
-    const sections = containerRef.current?.querySelectorAll("[data-animate]")
-    sections?.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -275,7 +254,6 @@ export default function Home() {
             {blogPosts.map((post) => (
               <Col key={post.id} xs={24} sm={12} lg={8}>
                 <Card
-                  // className={`${styles.blogCard} ${visibleSections[`blog-${post.id}`] ? styles.visible : ""}`}
                   cover={
                     <div className={styles.cardCover}>
                       <a href={`/blog/${post.id}`}>

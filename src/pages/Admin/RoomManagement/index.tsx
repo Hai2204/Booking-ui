@@ -14,35 +14,6 @@ import { useDispatch, useSelector } from "react-redux"
 const { Content } = Layout
 
 
-interface Partner {
-    partnerId: number
-    name: string
-    contactInfo: string
-}
-interface Accommodation {
-    accommodationId: number
-    partner: Partner
-    name: string
-    accommodationType: string
-    description: string
-    city: string
-    address: string
-}
-
-interface Room {
-    id: number
-    accommodation: Accommodation
-    roomCode: string
-    name: string
-    typeRoom: number
-    price: number
-    active: number
-    description: string
-    amenities: string
-    policy: string,
-    roomCategory: string,
-}
-
 export default function AdminRooms() {
     const dispatch = useDispatch()
     const { rooms, isLoading } = useSelector((state: RootState) => state.room)
@@ -82,7 +53,7 @@ export default function AdminRooms() {
         setIsModalVisible(true)
     }
 
-    const handleDelete = (roomId: string) => {
+    const handleDelete = (roomId: number) => {
         Modal.confirm({
             title: "Xác nhận xóa " + roomId,
             content: "Bạn có chắc chắn muốn xóa phòng này? Hành động này không thể hoàn tác.",

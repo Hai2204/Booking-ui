@@ -3,6 +3,7 @@ import authReducer from "./slices/authSlice"
 import roomReducer from "./slices/roomSlice"
 import bookingReducer from "./slices/bookingSlice"
 import userReducer from "./slices/userSlice"
+import partnerReducer from "./slices/partnerSlice"
 
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     user: userReducer,
     room: roomReducer,
     booking: bookingReducer,
+    partner: partnerReducer,
   },
 })
 
