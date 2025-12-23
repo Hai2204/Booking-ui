@@ -24,10 +24,11 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "lib/*": ["lib/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "lib/api.ts", "lib/*"],
   "noImplicitAny": false,
   "references": [{ "path": "./tsconfig.node.json" }]
 }
