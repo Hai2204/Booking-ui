@@ -1,7 +1,15 @@
 import { Carousel, Image } from 'antd';
+import React from 'react';
+
+// Định nghĩa interface cho dữ liệu ảnh
+interface ImageData {
+  id: number;
+  url: string;
+  alt: string;
+}
 
 // Dữ liệu mẫu chứa các URL ảnh
-const imageData = [
+const imageData: ImageData[] = [
   {
     id: 1,
     url: 'https://cdn-media.sforum.vn/storage/app/media/anh-dep-83.jpg',
@@ -24,7 +32,7 @@ const imageData = [
   },
 ];
 
-const CarouselComponent = () => {
+const CarouselComponent: React.FC = () => {
   // Cấu hình Ant Design Carousel
   const settings = {
     dots: true,

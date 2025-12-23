@@ -1,12 +1,26 @@
 import api from "./api"
 
+interface CreateBookingPayload {
+  roomId: number
+  userId: number
+  checkInDate: string
+  checkOutDate: string
+  guests: number
+  totalPrice: number
+  specialRequests?: string
+}
+
+interface UpdateBookingStatusPayload {
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+}
+
 export const bookingService = {
-  createBooking: async (payload) => {
+  createBooking: async (payload: CreateBookingPayload) => {
     const response = await api.post("/api/booking", payload)
     return response.data
   },
 
-  getUserBookings: async (userId) => {
+  getUserBookings: async (userId: number) => {
     const response = await api.get(`/api/booking?userId=${userId}`)
     return response.data
   },
@@ -16,12 +30,12 @@ export const bookingService = {
     return response.data
   },
 
-  updateBookingStatus: async (bookingId, status) => {
-    const response = await api.put(`/api/booking/${bookingId}`, { status })
+  updateBookingStatus: async (bookingId: number, status: UpdateBookingStatusPayload) => {
+    const response = await api.put(`/api/booking/${bookingId}`, status)
     return response.data
   },
 
-  cancelBooking: async (bookingId) => {
+  cancelBooking: async (bookingId: number) => {
     const response = await api.delete(`/api/booking/${bookingId}`)
     return response.data
   },

@@ -1,6 +1,7 @@
 import { Spin } from "antd"
+import React from "react"
 
-export default function LoadingScreen() {
+const LoadingScreen: React.FC = () => {
   return (
     <div
       style={{
@@ -18,3 +19,5 @@ export default function LoadingScreen() {
     </div>
   )
 }
+
+export default LoadingScreen

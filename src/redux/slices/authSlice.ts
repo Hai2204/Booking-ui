@@ -2,14 +2,41 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { authService } from "../../services/authService"
 import { setAuthToken, removeAuthToken } from "../../services/tokenService"
 
-const initialState = {
+interface User {
+  id: number
+  fullName: string
+  email: string
+  phone: string
+  role: string
+}
+
+interface AuthState {
+  user: User | null
+  isAuthenticated: boolean
+  isLoading: boolean
+  error: string | null
+}
+
+const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   isLoading: true,
   error: null,
 }
 
-export const login = createAsyncThunk("auth/login", async (payload, { rejectWithValue }) => {
+interface LoginPayload {
+  username: string
+  password: string
+}
+
+interface RegisterPayload {
+  fullName: string
+  email: string
+  phone: string
+  password: string
+}
+
+export const login = createAsyncThunk("auth/login", async (payload: LoginPayload, { rejectWithValue }) => {
   try {
     const response = await authService.login(payload);
     if (response && response.success && response.data) {
@@ -26,12 +53,12 @@ export const login = createAsyncThunk("auth/login", async (payload, { rejectWith
 
     // fallback: surface backend message if present
     return rejectWithValue(response?.message || "Hệ thống không khả dụng")
-  } catch (error) {
+  } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Hệ thống không khả dụng")
   }
 })
 
-export const register = createAsyncThunk("auth/register", async (payload, { rejectWithValue }) => {
+export const register = createAsyncThunk("auth/register", async (payload: RegisterPayload, { rejectWithValue }) => {
   try {
     const response = await authService.register(payload)
     // Support both response shapes for register as well
@@ -48,7 +75,7 @@ export const register = createAsyncThunk("auth/register", async (payload, { reje
     }
 
     return rejectWithValue(response?.message || "Registration failed")
-  } catch (error) {
+  } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Registration failed")
   }
 })
@@ -87,7 +114,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false
-        state.error = action.payload
+        state.error = action.payload as string
       })
       .addCase(register.pending, (state) => {
         state.isLoading = true
@@ -100,7 +127,7 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false
-        state.error = action.payload
+        state.error = action.payload as string
       })
   },
 })

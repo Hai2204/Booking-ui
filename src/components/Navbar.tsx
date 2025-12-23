@@ -3,10 +3,10 @@ import { LogoutOutlined, UserOutlined } from "@ant-design/icons"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { logout } from "@/redux/slices/authSlice"
-import type { RootState } from "@/redux/store"
 import * as motion from "motion/react-client";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react"
+import { RootState } from "@/redux/store"
 
 const { Header } = Layout;
 

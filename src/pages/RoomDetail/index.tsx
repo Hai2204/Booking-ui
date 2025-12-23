@@ -60,7 +60,7 @@ export default function BookingDetailPage() {
     useEffect(() => {
         const fetchRoom = async () => {
             try {
-                const response = await roomService.getRoomById(roomIdParam)
+                const response = await roomService.getRoomById(parseInt(roomIdParam as string))
                 if (response.success) {
                     setRoom(response.data)
                 } else {

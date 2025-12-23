@@ -5,11 +5,11 @@ import { Badge, Button, Card, Col, Empty, Input, Layout, Row, Select, Spin } fro
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import Navbar from "../components/Navbar.tsx/index.js"
-import CarouselComponent from "../components/CarouselComponent.jsx"
+import Navbar from "../components/Navbar"
+import CarouselComponent from "../components/CarouselComponent"
 import { logout } from "../redux/slices/authSlice"
 import { fetchRooms } from "../redux/slices/roomSlice"
-import type { RootState } from "../redux/store.js"
+import type { RootState } from "../redux/store"
 
 const { Content } = Layout
 

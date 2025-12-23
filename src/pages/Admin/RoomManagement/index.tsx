@@ -1,8 +1,10 @@
 "use client"
 
-import { createRoom, deleteRoom, fetchRooms, updateRoom } from "@/redux/slices/roomSlice"
-import type { RootState } from "@/redux/store"
+import { createRoom, fetchRooms, updateRoom } from "@/redux/slices/roomSlice"
+import { RootState } from "@/redux/store"
+
 import { accommodationService } from "@/services/accommodation"
+import { roomService } from "@/services/roomService"
 import { DeleteOutlined, EditOutlined, IdcardOutlined, PlusOutlined, SyncOutlined } from "@ant-design/icons"
 import { Button, Checkbox, Divider, Flex, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
 import * as motion from "motion/react-client"
@@ -30,6 +32,7 @@ interface Accommodation {
 interface Room {
     id: number
     accommodation: Accommodation
+    roomCode: string
     name: string
     typeRoom: number
     price: number
@@ -52,8 +55,6 @@ export default function AdminRooms() {
         try {
             const res = await accommodationService.getAllAccommodations()
             setAccommodations(res.data || []);
-            console.log(12, res.data);
-
         } catch (e) {
             message.error("Không tải được danh sách accommodation")
         }
@@ -83,15 +84,16 @@ export default function AdminRooms() {
 
     const handleDelete = (roomId: string) => {
         Modal.confirm({
-            title: "Xác nhận xóa",
+            title: "Xác nhận xóa " + roomId,
             content: "Bạn có chắc chắn muốn xóa phòng này? Hành động này không thể hoàn tác.",
             okText: "Xóa",
             okType: "danger",
             cancelText: "Không",
             onOk: async () => {
-                const result = await dispatch(deleteRoom(roomId) as any)
-                if (result.payload) {
+                const result = await roomService.deleteRoom(roomId)
+                if (result.success) {
                     message.success("Xóa phòng thành công")
+                    dispatch(fetchRooms() as any)
                 }
             },
         })
@@ -100,18 +102,19 @@ export default function AdminRooms() {
     const onFinish = async (values: any) => {
 
         if (editingRoom) {
-            console.log(values);
-            return;
-            const result = await dispatch(updateRoom({ roomId: editingRoom.id, payload: values }) as any)
-            if (result.payload) {
+            if (editingRoom.roomCode !== values.roomCode) {
+                message.error("Mã phòng không thể chỉnh sửa")
+                return
+            }
+            const result = await dispatch(updateRoom(values) as any)
+            if (result.payload?.id) {
                 message.success("Cập nhật phòng thành công")
                 setIsModalVisible(false)
+            } else {
+                message.error(result?.payload || "Cập nhật phòng thất bại")
             }
         } else {
             const result = await dispatch(createRoom(values) as any);
-
-            console.log(123, result);
-
             if (result.payload?.id) {
                 message.success("Thêm phòng thành công")
                 setIsModalVisible(false)
@@ -248,7 +251,7 @@ export default function AdminRooms() {
                                 <Input placeholder="VD: Phòng 101" />
                             </Form.Item>
                             <Form.Item name="roomCode" label="Mã phòng" rules={[{ required: true, message: "Vui lòng nhập mã phòng" }]}>
-                                <Input placeholder="VD: P101" />
+                                <Input readOnly={!!editingRoom} disabled={!!editingRoom} placeholder="VD: P101" />
                             </Form.Item>
                         </Flex>
 
