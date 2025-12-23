@@ -9,7 +9,7 @@ import { getAuthToken } from "@/services/tokenService"
 import routes, { RouteItem } from "./routes"
 import ProtectedRoute from "@/components/ProtectedRoute"
 import LoadingScreen from "@/components/LoadingScreen"
-import { RootState, AppDispatch } from "./redux/store"
+import { RootState, AppDispatch } from "@/redux/store"
 
 function App(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>()
