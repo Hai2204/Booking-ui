@@ -46,7 +46,7 @@ const AdminLayout: React.FC = () => {
 
         {/* SIDEBAR */}
         <Sider
-          width={250}
+          width={350}
           collapsible
           collapsed={collapsed}
           onCollapse={setCollapsed}

@@ -1,51 +1,59 @@
-import { ArrowLeftOutlined, HomeFilled, PlusOutlined, SyncOutlined } from '@ant-design/icons';
+import { fetchAllBookings, getBookings } from '@/redux/slices/bookingSlice';
+import { ArrowLeftOutlined, BookOutlined, EditOutlined, HomeFilled, PlusOutlined, SyncOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Divider, Flex, Layout, Space, Table, Tag } from 'antd';
-import * as motion from "motion/react-client";
-import React, { use, useEffect, useState } from 'react';
-import Form from './Form';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllBookings, getBookings } from '@/redux/slices/bookingSlice';
 import { toVND } from 'lib/utils';
+import * as motion from "motion/react-client";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Form from './Form';
 const { Content } = Layout;
 
 
-const columns: TableProps<Booking>['columns'] = [
+
+
+const App: React.FC = () => {
+  const [mode, setMode] = useState<Mode>("view");
+  const [editingItem, setEditingItem] = useState<Booking | null>(null);
+  const data = useSelector(getBookings);
+  const dispatch = useDispatch();
+
+  const columns: TableProps<Booking>['columns'] = [
   {
     title: 'id',
     dataIndex: 'id',
     key: 'id',
-    render: (text) => <a>{text}</a>,
+    render: (text) => <div>{text}</div>,
   },
   {
     title: 'Khách Hàng',
     dataIndex: 'customer',
     key: 'customerName',
-    render: (customer: Customer) => <a>{customer.name}</a>,
+    render: (customer: Customer) => <div>{customer.name}</div>,
   },
   {
     title: 'Tên Phòng',
     dataIndex: 'room',
     key: 'room',
-    render: (room: Room) => <a>{room.name}</a>,
+    render: (room: Room) => <div>{room.name}</div>,
   },
   {
     title: 'Giá Tiền',
     dataIndex: 'room',
     key: 'price',
-    render: (room: Room) => <a>{toVND(room.price)}</a>,
+    render: (room: Room) => <div>{toVND(room.price)}</div>,
   },
   {
     title: 'Giờ vào',
     dataIndex: 'timeIn',
     key: 'timeIn',
-    render: (timeIn) => <a>{new Date(timeIn).toLocaleString()}</a>,
+    render: (timeIn) => <div>{new Date(timeIn).toLocaleString()}</div>,
   },
   {
     title: 'Giờ ra',
     dataIndex: 'timeOut',
     key: 'timeOut',
-    render: (timeOut) => <a>{new Date(timeOut).toLocaleString()}</a>,
+    render: (timeOut) => <div>{new Date(timeOut).toLocaleString()}</div>,
   },
 
   {
@@ -54,28 +62,36 @@ const columns: TableProps<Booking>['columns'] = [
     dataIndex: 'status',
     render: (_, { status }) => (
       <Flex gap="small" align="center" wrap>
-        <Tag color={"geekblue"} key={status}>
-          {status.toUpperCase()}
+        <Tag icon={<BookOutlined />} color="#55acee">
+           {status.toUpperCase()}
         </Tag>
       </Flex>
     ),
+  },
+    {
+    title: 'Mô tả',
+    dataIndex: 'note',
+    key: 'note',
+    render: (note) => <div>{note}</div>,
   },
   {
     title: 'Action',
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
+         <Button type="text" size="small" icon={<EditOutlined />}
+            onClick={() => {
+              setMode("edit");
+              setEditingItem(record)
+            }}
+          >
+            Sửa
+          </Button>
         <a>Delete</a>
       </Space>
     ),
   },
 ];
-
-const App: React.FC = () => {
-  const [mode, setMode] = useState<Mode>("view");
-  const [editingItem, setEditingItem] = useState<Booking | null>(null);
-  const data = useSelector(getBookings);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (mode === "view") {
@@ -127,6 +143,7 @@ const App: React.FC = () => {
               rowKey="id"
               loading={false}
               pagination={{ pageSize: 10 }}
+              bordered
               scroll={{ x: 1000 }}
             />
           }

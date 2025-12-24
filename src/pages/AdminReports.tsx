@@ -121,7 +121,7 @@ export default function AdminReports() {
       dataIndex: "id",
       key: "id",
       width: 120,
-      render: (text: string) => <span className="font-mono text-xs">{text.slice(0, 8)}</span>,
+      render: (text: string) => <span className="font-mono text-xs">{text}</span>,
     },
     {
       title: "Phòng",
