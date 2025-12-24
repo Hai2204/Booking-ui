@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import { ApiResponse, userService } from "@/services/userService"
-import type { RootState } from "@/redux/store"
+import { userService } from "@/services/userService"
 import { UserCustomerModal } from "@/pages/Admin/UserManagement";
-import { log } from "console";
+import { ApiResponse } from "@/services/commonType";
+import { RootState } from "@/redux/store";
 
 export interface User {
   username: string;
@@ -18,7 +18,6 @@ export interface UserResponse {
   username: string;
   fullName: string;
 }
-
 
 
 export interface UserState {

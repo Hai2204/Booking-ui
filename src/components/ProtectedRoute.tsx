@@ -1,7 +1,8 @@
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
 import { useSelector } from "react-redux"
 import React from "react"
 import type { RootState } from "../redux/store"
+import { getAuthToken } from "@/services/tokenService"
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -11,17 +12,21 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
-  requiredRole,
-  isProtected
 }) => {
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth)
+  const { isAuthenticated, permissions } = useSelector((state: RootState) => state.auth);
 
-  if (!isAuthenticated && !!isProtected) {
-    return <Navigate to="/login" replace />
+  const token = getAuthToken();
+  const location = useLocation();
+
+  if (!token || !isAuthenticated ) {
+    return <Navigate to="/login" replace />;
   }
+  const allowed = permissions?.some(p =>
+    location.pathname.startsWith(p.url)
+  );
 
-  if (requiredRole && user?.roleName !== requiredRole) {//403
-    return <Navigate to="/403" replace />
+  if (!allowed) {
+    return <Navigate to="/403" replace />;
   }
 
   return <>{children}</>

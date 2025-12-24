@@ -1,68 +1,39 @@
 import Navbar from '@/components/Navbar.tsx';
-import { AccountBookOutlined, HomeOutlined, PicLeftOutlined, ScheduleOutlined, UserOutlined } from '@ant-design/icons';
+import { getPermissions } from '@/redux/slices/authSlice';
+import * as Icons from "@ant-design/icons";
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const { Content, Sider } = Layout;
 
-/** CẤU HÌNH MENU DUY NHẤT */
-const adminMenus = [
-  {
-    key: "1",
-    path: "/admin/users-management.html",
-    label: "User Management",
-    icon: <UserOutlined />
-  },
-  {
-    key: "2",
-    path: "/admin/rooms.html",
-    label: "Room Management",
-    icon: <HomeOutlined />
-  },
-  {
-    key: "3",
-    path: "/admin/bookings.html",
-    label: "Booking Management",
-    icon: <AccountBookOutlined />
-  },
-  {
-    key: "6",
-    path: "/admin/partners.html",
-    label: "Partner Management",
-    icon: <PicLeftOutlined  />
-  },
-  {
-    key: "4",
-    path: "/admin/blogs.html",
-    label: "Blog Management",
-    icon: <ScheduleOutlined />
-  },
-  {
-    key: "5",
-    path: "/admin/reports.html",
-    label: "Report Management",
-    icon: <ScheduleOutlined />
-  },
-];
-
-/** TẠO MENU ITEMS */
-const menuItems: MenuProps['items'] = adminMenus.map(m => ({
-  key: m.key,
-  icon: m.icon,
-  label: <Link to={m.path}>{m.label}</Link>
-}));
-
-/** MAP PATH → KEY */
-const pathToKey = Object.fromEntries(adminMenus.map(m => [m.path, m.key]));
-
-
 const AdminLayout: React.FC = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const adminMenus = useSelector(getPermissions);
+
+  const MenuIcon = ({ icon }: { icon?: string }) => {
+    if (!icon) return null;
+
+    const AntdIcon = (Icons as any)[icon];
+    return AntdIcon ? <AntdIcon /> : null;
+  };
+  /** TẠO MENU ITEMS */
+  const menuItems: MenuProps['items'] = adminMenus.map((m, i) => {
+    return {
+      key: i.toString(),
+      // Ensure the icon className is a string and uses proper FontAwesome syntax
+      icon: <MenuIcon icon={m.icon} />,
+      label: <Link to={m.url}>{m.name}</Link>,
+    }
+  });
+  /** MAP PATH → KEY */
+  const pathToKey = Object.fromEntries(adminMenus.map((m, i) => [m.url, i.toString()]));
 
   const activeKey = pathToKey[location.pathname] || "1";
+
 
   const {
     token: { colorBgContainer, borderRadiusLG },

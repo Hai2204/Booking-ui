@@ -196,17 +196,17 @@ export default function AdminReports() {
           <Row gutter={[24, 24]} className="mb-8">
             <Col xs={24} sm={12} lg={6}>
               <Card className="shadow-md border-0 rounded-lg" hoverable>
-                <Statistic title="Tổng đặt phòng" value={filteredBookings.length} valueStyle={{ color: "#1890ff" }} />
+                <Statistic title="Tổng đặt phòng" value={filteredBookings.length} styles={{ content: { color: "#1890ff" } }} />
               </Card>
             </Col>
             <Col xs={24} sm={12} lg={6}>
               <Card className="shadow-md border-0 rounded-lg" hoverable>
-                <Statistic title="Xác nhận" value={confirmedCount} valueStyle={{ color: "#52c41a" }} />
+                <Statistic title="Xác nhận" value={confirmedCount} styles={{ content: { color: "#52c41a" } }} />
               </Card>
             </Col>
             <Col xs={24} sm={12} lg={6}>
               <Card className="shadow-md border-0 rounded-lg" hoverable>
-                <Statistic title="Tổng doanh thu" value={totalRevenue} prefix="$" valueStyle={{ color: "#faad14" }} />
+                <Statistic title="Tổng doanh thu" value={totalRevenue} prefix="$" styles={{ content: { color: "#faad14" } }} />
               </Card>
             </Col>
             <Col xs={24} sm={12} lg={6}>
@@ -215,7 +215,7 @@ export default function AdminReports() {
                   title="Trung bình / đặt"
                   value={averageBooking}
                   prefix="$"
-                  valueStyle={{ color: "#f5222d" }}
+                  styles={{ content: { color: "#f5222d" } }}
                 />
               </Card>
             </Col>

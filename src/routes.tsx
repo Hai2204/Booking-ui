@@ -1,5 +1,5 @@
 import AccessDenied from "@/pages/AccessDenied";
-import Admin from "@/pages/Admin";
+import Admin from "@/pages/Admin/Admin";
 import AdminBookings from "@/pages/Admin/BookingManagement";
 import AdminReports from "@/pages/AdminReports";
 import AdminRooms from "@/pages/Admin/RoomManagement";
@@ -29,32 +29,30 @@ export interface RouteItem {
 
 const routes: RouteItem[] = [
   // public
-  { path: "/login", element: <Login />, protected: false },
-  { path: "/register", element: <Register />, protected: false },
-  { path: "/forgot-password", element: <ForgotPassword />, protected: false },
-  { path: "/reset-password/:token", element: <ResetPassword />, protected: false },
+  { path: "/login", element: <Login />,  },
+  { path: "/register", element: <Register />,  },
+  { path: "/forgot-password", element: <ForgotPassword />,  },
+  { path: "/reset-password/:token", element: <ResetPassword />,  },
 
   // customer routes
-  { path: "/dashboard", element: <HomePage />, protected: false },
-  { path: "/booking/:roomId", element: <BookingDetail />, protected: false },
-  { path: "/bookings", element: <MyBookings />, protected: false },
+  { path: "/dashboard", element: <HomePage />,  },
+  { path: "/booking/:roomId", element: <BookingDetail />,  },
+  { path: "/bookings", element: <MyBookings />,  },
   {
     path: "/my-bookings",
     element: <MyBookings />,
     protected: true,
-    requiredRole: "ROLE_USER",
   },
 
   // blog
-  { path: "/blogs", element: <Blogs />, protected: false },
-  { path: "/blog/:blogId", element: <BlogItem />, protected: false },
+  { path: "/blogs", element: <Blogs />, protected: true, },
+  { path: "/blog/:blogId", element: <BlogItem />,  protected: true,},
 
   // ADMIN — NESTED ROUTE
   {
     path: "/admin",
     element: <Admin />, // layout bao ngoài
     protected: true,
-    requiredRole: "ROLE_ADMIN",
     children: [
       { path: "", element: <Navigate to="/admin/users-management.html" replace /> },        
       { path: "users-management.html", element: <AdminUsers /> },        
@@ -67,8 +65,8 @@ const routes: RouteItem[] = [
   },
 
   // error
-  { path: "/403", element: <AccessDenied />, protected: false },
-  { path: "*", element: <NotFound />, protected: false },
+  { path: "/403", element: <AccessDenied />,  },
+  { path: "*", element: <NotFound />,  },
 ];
 
 export default routes;

@@ -3,7 +3,7 @@ import viVN from "antd/locale/vi_VN"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { JSX, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setUser, setLoading } from "@/redux/slices/authSlice"
+import { setUser, setLoading, setPermissions } from "@/redux/slices/authSlice"
 import { getAuthToken } from "@/services/tokenService"
 
 import routes, { RouteItem } from "./routes"
@@ -22,6 +22,10 @@ function App(): JSX.Element {
       const userData = localStorage.getItem("user")
       if (userData) {
         dispatch(setUser(JSON.parse(userData)))
+        const permissionsData = localStorage.getItem("permissions")
+        if (permissionsData) {
+          dispatch(setPermissions(JSON.parse(permissionsData)))
+        }
       }
     }
 
