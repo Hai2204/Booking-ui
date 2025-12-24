@@ -9,6 +9,7 @@ import FooterPage from "@/components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store"
 import { fetchRooms } from "@/redux/slices/roomSlice";
+import { toVND } from "lib/utils"
 
 const { Content } = Layout
 
@@ -51,20 +52,6 @@ interface Room {
     roomCode: string
     roomCategory: string
 }
-
-  const toVND = (value: any) => {
-    value = value.toString().replace(/\./g, "");
-    const formatted = new Intl.NumberFormat("it-IT", {
-      style: "currency",
-      currency: "VND",
-    })
-      .format(value)
-      .replace("₫", "")
-      .trim();
-
-    return formatted;
-  }
-
 
 
 export default function BookingsPage() {

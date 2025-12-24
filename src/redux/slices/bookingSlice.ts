@@ -1,17 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { bookingService } from "../../services/bookingService"
+import { RootState } from "../store"
 
-interface Booking {
-  id: number
-  roomId: number
-  userId: number
-  checkInDate: string
-  checkOutDate: string
-  guests: number
-  totalPrice: number
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
-  specialRequests?: string
-}
 
 interface BookingState {
   bookings: Booking[]
@@ -42,6 +32,19 @@ interface UpdateBookingStatusPayload {
   status: Booking['status']
 }
 
+export const fetchAllBookings = createAsyncThunk("booking/fetchAllBookings", async (_, { rejectWithValue }) => {
+  try {
+    const response = await bookingService.getAllBookings()
+
+    if (response.success) {
+      return Array.isArray(response.data) ? response.data : [response.data]
+    }
+    return rejectWithValue(response.message)
+  } catch (error: any) {
+    return rejectWithValue(error.message)
+  }
+})
+
 export const createBooking = createAsyncThunk("booking/createBooking", async (payload: CreateBookingPayload, { rejectWithValue }) => {
   try {
     const response = await bookingService.createBooking(payload)
@@ -66,17 +69,7 @@ export const fetchUserBookings = createAsyncThunk("booking/fetchUserBookings", a
   }
 })
 
-export const fetchAllBookings = createAsyncThunk("booking/fetchAllBookings", async (_, { rejectWithValue }) => {
-  try {
-    const response = await bookingService.getAllBookings()
-    if (response.success) {
-      return Array.isArray(response.data) ? response.data : [response.data]
-    }
-    return rejectWithValue(response.message)
-  } catch (error: any) {
-    return rejectWithValue(error.message)
-  }
-})
+
 
 export const updateBookingStatus = createAsyncThunk(
   "booking/updateBookingStatus",
@@ -154,4 +147,5 @@ const bookingSlice = createSlice({
 })
 
 export const { clearError } = bookingSlice.actions
+export const getBookings = (state: RootState) => state.booking.bookings
 export default bookingSlice.reducer

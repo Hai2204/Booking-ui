@@ -7,6 +7,7 @@ import styles from "./page.module.css"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchRooms } from "@/redux/slices/roomSlice"
 import type { RootState } from "@/redux/store"
+import { toVND } from "lib/utils"
 
 const { Text } = Typography;
 
@@ -159,20 +160,6 @@ export default function Home() {
       window.scrollTo({ top, behavior: "smooth" })
     }
   }
-
-  const toVND = (value: any) => {
-    value = value.toString().replace(/\./g, "");
-    const formatted = new Intl.NumberFormat("it-IT", {
-      style: "currency",
-      currency: "VND",
-    })
-      .format(value)
-      .replace("₫", "")
-      .trim();
-
-    return formatted;
-  }
-
 
   useEffect(() => {
     dispatch(fetchRooms({ category: key, limit: 2 }) as any)

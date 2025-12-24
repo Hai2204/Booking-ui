@@ -50,11 +50,11 @@ const App: React.FC = () => {
           >
             Sửa
           </Button>
-          <Button type="text" size="small" danger icon={<DeleteOutlined />}
+          {/* <Button type="text" size="small" danger icon={<DeleteOutlined />}
           // onClick={() => handleDelete(record.id)}
           >
             Xóa
-          </Button>
+          </Button> */}
         </Space>
       ),
     },

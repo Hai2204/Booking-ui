@@ -1,44 +1,62 @@
-import { FileSearchOutlined, SyncOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, HomeFilled, PlusOutlined, SyncOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Divider, Flex, Space, Table, Tag } from 'antd';
+import { Button, Divider, Flex, Layout, Space, Table, Tag } from 'antd';
 import * as motion from "motion/react-client";
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
+import Form from './Form';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllBookings, getBookings } from '@/redux/slices/bookingSlice';
+import { toVND } from 'lib/utils';
+const { Content } = Layout;
 
 
-const columns: TableProps<DataType>['columns'] = [
+const columns: TableProps<Booking>['columns'] = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'id',
+    dataIndex: 'id',
+    key: 'id',
     render: (text) => <a>{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: 'Khách Hàng',
+    dataIndex: 'customer',
+    key: 'customerName',
+    render: (customer: Customer) => <a>{customer.name}</a>,
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Tên Phòng',
+    dataIndex: 'room',
+    key: 'room',
+    render: (room: Room) => <a>{room.name}</a>,
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
+    title: 'Giá Tiền',
+    dataIndex: 'room',
+    key: 'price',
+    render: (room: Room) => <a>{toVND(room.price)}</a>,
+  },
+  {
+    title: 'Giờ vào',
+    dataIndex: 'timeIn',
+    key: 'timeIn',
+    render: (timeIn) => <a>{new Date(timeIn).toLocaleString()}</a>,
+  },
+  {
+    title: 'Giờ ra',
+    dataIndex: 'timeOut',
+    key: 'timeOut',
+    render: (timeOut) => <a>{new Date(timeOut).toLocaleString()}</a>,
+  },
+
+  {
+    title: 'Tráng Thái',
+    key: 'status',
+    dataIndex: 'status',
+    render: (_, { status }) => (
       <Flex gap="small" align="center" wrap>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
+        <Tag color={"geekblue"} key={status}>
+          {status.toUpperCase()}
+        </Tag>
       </Flex>
     ),
   },
@@ -47,73 +65,75 @@ const columns: TableProps<DataType>['columns'] = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
         <a>Delete</a>
       </Space>
     ),
   },
 ];
 
-
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
 const App: React.FC = () => {
+  const [mode, setMode] = useState<Mode>("view");
+  const [editingItem, setEditingItem] = useState<Booking | null>(null);
+  const data = useSelector(getBookings);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (mode === "view") {
+      dispatch(fetchAllBookings() as any);
+    }
+  }, [dispatch, mode]);
+
   return <>
-    <motion.header
-    >
-      <Flex gap="small" justify='space-between' align="center" style={{ padding: '0 30px 0 30px' }}>
-        <motion.h1
-          style={{ fontSize: 22 }}
+    <Content className="p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+
+        <motion.header
         >
-          <FileSearchOutlined style={{ marginRight: 8 }} />
-          Quản Lý Đặt Phòng
-        </motion.h1>
+          <Flex gap="small" justify='space-between' align="center" style={{ padding: '0 30px 0 30px' }}>
+            <motion.h1
+              style={{ fontSize: 22 }}
+            >
+              <HomeFilled style={{ marginRight: 8 }} />
+              QL Đặt chỗ
+            </motion.h1>
+            <motion.div
+            >
+              <Button
+                type="primary"
+                icon={mode === "view" ? <PlusOutlined /> : <ArrowLeftOutlined />}
+                onClick={() => {
+                  setMode(mode === "view" ? "create" : "view");
+                  setEditingItem(null);
+                }} className="rounded-lg h-10"
+                loading={false && { icon: <SyncOutlined spin /> }}
+              >
+                {mode === "view" ? "Thêm booking mới" : "Trở lại"}
+              </Button>
+            </motion.div>
+          </Flex>
+
+
+        </motion.header>
+        <Divider />
         <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
         >
-          <Button
-            type="primary"
-            loading={false && { icon: <SyncOutlined spin /> }}
-          >
-            Create User
-          </Button>
+          {
+            mode !== "view" ? <Form data={editingItem} mode={mode} setMode={setMode} /> : <Table
+              dataSource={data}
+              columns={columns}
+              rowKey="id"
+              loading={false}
+              pagination={{ pageSize: 10 }}
+              scroll={{ x: 1000 }}
+            />
+          }
         </motion.div>
-      </Flex>
-
-
-    </motion.header>
-    <Divider />
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-    >
-
-      <Table columns={columns} dataSource={data} />
-    </motion.div>
-  </>;
+      </div>
+    </Content>
+  </>
 };
 
 export default App;

@@ -10,9 +10,7 @@ interface CreateBookingPayload {
   specialRequests?: string
 }
 
-interface UpdateBookingStatusPayload {
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
-}
+
 
 export const bookingService = {
   createBooking: async (payload: CreateBookingPayload) => {
@@ -20,17 +18,17 @@ export const bookingService = {
     return response.data
   },
 
-  getUserBookings: async (userId: number) => {
-    const response = await api.get(`/api/booking?userId=${userId}`)
+  getUserBookings: async (userId?: number, ) => {
+    const response = await api.get(`/api/booking`, { params: { userId : userId } })
     return response.data
   },
 
   getAllBookings: async () => {
-    const response = await api.get("/api/booking")
+    const response = await api.get("/api/bookings")
     return response.data
   },
 
-  updateBookingStatus: async (bookingId: number, status: UpdateBookingStatusPayload) => {
+  updateBookingStatus: async (bookingId: number, status: Status) => {
     const response = await api.put(`/api/booking/${bookingId}`, status)
     return response.data
   },

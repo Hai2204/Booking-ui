@@ -1,22 +1,21 @@
 import {
-  Layout,
-  Row,
-  Col,
-  Card,
-  Button,
-  Input,
-  Tooltip,
-  Flex,
-  Dropdown,
-} from "antd";
-import { useNavigate } from "react-router-dom";
-import styles from "../HomePage/page.module.css";
-import {
   DownOutlined,
   InfoCircleOutlined,
   SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  Input,
+  Layout,
+  Row,
+  Tooltip
+} from "antd";
+import { useNavigate } from "react-router-dom";
+import styles from "../HomePage/page.module.css";
 
 const { Content } = Layout;
 
@@ -45,11 +44,11 @@ const items = [
     disabled: true,
   },
 ];
-const handleButtonClick = (e) => {
+const handleButtonClick = (e : any) => {
   console.log("click left button", e);
 };
 
-const handleMenuClick = e => {
+const handleMenuClick = (e : any) => {
   console.log('click', e);
 };
 

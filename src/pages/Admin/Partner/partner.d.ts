@@ -1,5 +1,3 @@
-type Mode = "view" | "create" | "edit";
-
 interface Partner {
     partnerId: number;
     name: string;

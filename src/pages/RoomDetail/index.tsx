@@ -5,6 +5,7 @@ import { MapPin, Wifi as WiFi } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import styles from "./booking.module.css"
+import { toVND } from "lib/utils"
 
 const { Content } = Layout
 
@@ -33,19 +34,6 @@ interface Room {
     description: string
     amenities: string
     policy: string
-}
-
-  const toVND = (value : any) => {
-  value = value.toString().replace(/\./g, "");
-  const formatted = new Intl.NumberFormat("it-IT", {
-    style: "currency",
-    currency: "VND",
-    })
-    .format(value)
-    .replace("₫", "")
-    .trim();
-  
-  return formatted;
 }
 
 export default function BookingDetailPage() {

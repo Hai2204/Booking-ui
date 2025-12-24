@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createRoom, deleteRoom, fetchRooms, updateRoom } from "@/redux/slices/roomSlice"
 import type { RootState } from "@/redux/store"
+import { toVND } from "lib/utils"
 
 const { Content } = Layout
 
@@ -99,18 +100,6 @@ export default function AdminRooms() {
     }
   }
 
-  const toVND = (value: any) => {
-    value = value.toString().replace(/\./g, "");
-    const formatted = new Intl.NumberFormat("it-IT", {
-      style: "currency",
-      currency: "VND",
-    })
-      .format(value)
-      .replace("₫", "")
-      .trim();
-
-    return formatted;
-  }
 
   const columns = [
     {

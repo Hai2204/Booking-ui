@@ -1,0 +1,1 @@
+type Mode = "view" | "create" | "edit" | "detail";

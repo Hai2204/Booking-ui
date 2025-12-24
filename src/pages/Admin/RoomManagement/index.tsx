@@ -7,6 +7,7 @@ import { accommodationService } from "@/services/accommodation"
 import { roomService } from "@/services/roomService"
 import { DeleteOutlined, EditOutlined, IdcardOutlined, PlusOutlined, SyncOutlined } from "@ant-design/icons"
 import { Button, Checkbox, Divider, Flex, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
+import { toVND } from "lib/utils"
 import * as motion from "motion/react-client"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -94,19 +95,6 @@ export default function AdminRooms() {
                 message.error(result?.payload || "Thêm phòng thất bại")
             }
         }
-    }
-
-    const toVND = (value: any) => {
-        value = value.toString().replace(/\./g, "");
-        const formatted = new Intl.NumberFormat("it-IT", {
-            style: "currency",
-            currency: "VND",
-        })
-            .format(value)
-            .replace("₫", "")
-            .trim();
-
-        return formatted;
     }
 
     const columns = [
