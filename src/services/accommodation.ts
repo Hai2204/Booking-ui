@@ -17,8 +17,16 @@ export interface Partner {
 }
 
 export const accommodationService = {
-      getAllAccommodations: async (): Promise<ApiResponse<Accommodation[]>> => {
-        const response = await api.get<ApiResponse<Accommodation[]>>("/api/accommodations", null)
-        return response.data
-      },
+  getAllAccommodations: async (id?: number): Promise<ApiResponse<Accommodation[]>> => {
+    const response = await api.get<ApiResponse<Accommodation[]>>("/api/accommodations", {
+      params: {
+        id: id
+      }
+    })
+    return response.data
+  },
+  createAccommodation: async (payload: Accommodation): Promise<ApiResponse<Accommodation>> => {
+    const response = await api.post<ApiResponse<Accommodation>>("/api/accommodation", payload)
+    return response.data
+  },
 }

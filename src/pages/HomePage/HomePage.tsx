@@ -340,13 +340,13 @@ export default function Home() {
                             />
                           </a>
                           <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
-                            {i.name}
+                            {typeof i.name === 'string' ? i.name : 'No name'}
                           </h4>
                           <p style={{ color: "#666", marginBottom: "12px" }}>
-                            {i.accommodation.description}
+                            {typeof i.accommodation?.description === 'string' ? i.accommodation.description : 'No description'}
                           </p>
                           <div style={{ fontSize: "18px", fontWeight: "bold", color: "#b89968", marginTop: "12px" }}>
-                            {toVND(i.price)} / đêm
+                            {typeof i.price === 'number' ? toVND(i.price) : 'Price not available'} / đêm
                           </div>
                         </Card>
                       </Col>
@@ -370,13 +370,13 @@ export default function Home() {
                             />
                           </a>
                           <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
-                            {i.name}
+                            {typeof i.name === 'string' ? i.name : 'No name'}
                           </h4>
                           <p style={{ color: "#666", marginBottom: "12px" }}>
-                            {i.accommodation.description}
+                            {typeof i.accommodation?.description === 'string' ? i.accommodation.description : 'No description'}
                           </p>
                           <div style={{ fontSize: "18px", fontWeight: "bold", color: "#b89968", marginTop: "12px" }}>
-                            {toVND(i.price)} / đêm
+                            {typeof i.price === 'number' ? toVND(i.price) : 'Price not available'} / đêm
                           </div>
                         </Card>
                       </Col>
@@ -400,13 +400,13 @@ export default function Home() {
                             />
                           </a>
                           <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "8px" }}>
-                            {i.name}
+                            {typeof i.name === 'string' ? i.name : 'No name'}
                           </h4>
                           <p style={{ color: "#666", marginBottom: "12px" }}>
-                            {i.accommodation.description}
+                            {typeof i.accommodation?.description === 'string' ? i.accommodation.description : 'No description'}
                           </p>
                           <div style={{ fontSize: "18px", fontWeight: "bold", color: "#b89968", marginTop: "12px" }}>
-                            {toVND(i.price)} / đêm
+                            {typeof i.price === 'number' ? toVND(i.price) : 'Price not available'} / đêm
                           </div>
                         </Card>
                       </Col>

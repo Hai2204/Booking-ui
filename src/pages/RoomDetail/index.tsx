@@ -1,6 +1,6 @@
 import { roomService } from "@/services/roomService"
-import { ArrowLeftOutlined } from "@ant-design/icons"
-import { Button, Card, Col, DatePicker, Divider, Form, InputNumber, Layout, message, Row } from "antd"
+import { ArrowLeftOutlined, LeftOutlined, RightOutlined, RotateLeftOutlined, RotateRightOutlined, SwapOutlined, UndoOutlined, ZoomInOutlined, ZoomOutOutlined } from "@ant-design/icons"
+import { Button, Card, Col, DatePicker, Divider, Form, Image, InputNumber, Layout, message, Row, Space } from "antd"
 import { MapPin, Wifi as WiFi } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -44,6 +44,8 @@ export default function BookingDetailPage() {
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
     const [room, setRoom] = useState<Room>()
+    const [current, setCurrent] = useState(0);
+    const images = ["/double-room-hotel.jpg", "/family-room-hotel.jpg", "/luxury-suite-hotel.jpg", "/luxury-spa-relaxation.jpg"];
 
     useEffect(() => {
         const fetchRoom = async () => {
@@ -131,28 +133,67 @@ export default function BookingDetailPage() {
                         {/* Left - Images & Details */}
                         <Col xs={24} lg={14}>
                             <div className={styles.imageGallery}>
-                                <img
-                                    src={"/double-room-hotel.jpg"}
-                                    alt={room.name}
-                                    style={{ width: "100%", borderRadius: "8px", marginBottom: "16px" }}
-                                />
-                                <Row gutter={[8, 8]}>
-                                    {["/double-room-hotel.jpg", "/double-room-hotel.jpg", "/double-room-hotel.jpg", "/luxury-spa-relaxation.jpg"].map((img, idx) => (
-                                        <Col key={idx} xs={8} sm={6}>
-                                            <img
-                                                src={img || "/placeholder.svg"}
-                                                alt={`${room.name} ${idx + 1}`}
-                                                style={{
-                                                    width: "100%",
+                                <Image.PreviewGroup
+                                    preview={{
+                                        actionsRender: (
+                                            _,
+                                            {
+                                                transform: { scale },
+                                                actions: {
+                                                    onActive,
+                                                    onFlipY,
+                                                    onFlipX,
+                                                    onRotateLeft,
+                                                    onRotateRight,
+                                                    onZoomOut,
+                                                    onZoomIn,
+                                                    onReset,
+                                                    
+                                                },
+                                            },
+                                        ) => (
+                                            <Space size={36} className="toolbar-wrapper">
+                                                <LeftOutlined disabled={current === 0} onClick={() => onActive?.(-1)} />
+                                                <RightOutlined
+                                                    disabled={current === images.length - 1}
+                                                    onClick={() => onActive?.(1)}
+                                                />
+                                                <SwapOutlined rotate={90} onClick={onFlipY} />
+                                                <SwapOutlined onClick={onFlipX} />
+                                                <RotateLeftOutlined onClick={onRotateLeft} />
+                                                <RotateRightOutlined onClick={onRotateRight} />
+                                                <ZoomOutOutlined disabled={scale === 1} onClick={onZoomOut} />
+                                                <ZoomInOutlined disabled={scale === 50} onClick={onZoomIn} />
+                                                <UndoOutlined onClick={onReset} />
+                                            </Space>
+                                        ),
+                                        onChange: (index) => {
+                                            setCurrent(index);
+                                        },
+                                    }}
+                                >
+                                    <Image
+                                        alt={room.name}
+                                        className="image-no-hover-cover"
+                                        src={"/double-room-hotel.jpg"}
+                                        style={{ width: "100%", borderRadius: "4px"}}
+                                    />
+
+                                    <Row gutter={[12, 12]} style={{ marginTop: "16px"  }}>
+                                        {images.map((item, index) => (
+                                            <Col key={index} xs={8} sm={6}>
+                                                <Image alt={`image-${index}`} key={item} style={{
+                                                    width: "150px",
                                                     height: "80px",
                                                     objectFit: "cover",
                                                     borderRadius: "4px",
                                                     cursor: "pointer",
                                                 }}
-                                            />
-                                        </Col>
-                                    ))}
-                                </Row>
+                                                    src={item || "/placeholder.svg"} />
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </Image.PreviewGroup>
                             </div>
 
                             {/* Room Info */}

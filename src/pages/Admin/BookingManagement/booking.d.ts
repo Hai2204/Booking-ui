@@ -1,5 +1,3 @@
-type Status = 'booked' | 'active' | 'close' | 'cancel';
-
 interface Customer {
   id: number;
   name: string;

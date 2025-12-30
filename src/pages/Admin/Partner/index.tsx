@@ -5,6 +5,7 @@ import * as motion from "motion/react-client";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Form from './Form';
+import Detail from './Form/Detail';
 const { Content } = Layout
 
 
@@ -22,6 +23,17 @@ const App: React.FC = () => {
     }
   }, [dispatch, mode]);
 
+
+  useEffect(() => {
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMode("view");
+      }
+    };
+
+    window.addEventListener("keyup", handleKeyUp);
+    return () => window.removeEventListener("keyup", handleKeyUp);
+  }, []);
 
   const columns = [
     {
@@ -100,14 +112,23 @@ const App: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
           >
             {
-              mode !== "view" ? <Form data={editingItem} mode={mode} setMode={setMode} /> : <Table
-                dataSource={partners}
-                columns={columns}
-                rowKey="partnerId"
-                loading={isLoading}
-                pagination={{ pageSize: 10 }}
-                scroll={{ x: 1000 }}
-              />
+              mode === 'detail' ? <Detail data={editingItem} setMode={setMode} /> :
+                mode !== "view" ? <Form data={editingItem} mode={mode} setMode={setMode} /> : <Table
+                  onRow={(record) => {
+                    return {
+                      onDoubleClick: () => {
+                        setMode('detail'),
+                          setEditingItem(record)
+                      }, // double click row
+                    };
+                  }}
+                  dataSource={partners}
+                  columns={columns}
+                  rowKey="partnerId"
+                  loading={isLoading}
+                  pagination={{ pageSize: 10 }}
+                  scroll={{ x: 1000 }}
+                />
             }
           </motion.div>
         </div>

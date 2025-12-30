@@ -6,7 +6,7 @@ import { RootState } from "@/redux/store"
 import { accommodationService } from "@/services/accommodation"
 import { roomService } from "@/services/roomService"
 import { DeleteOutlined, EditOutlined, IdcardOutlined, PlusOutlined, SyncOutlined } from "@ant-design/icons"
-import { Button, Checkbox, Divider, Flex, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
+import { Button, Cascader, Checkbox, Divider, Flex, Form, Input, InputNumber, Layout, message, Modal, Select, Space, Table, Tag } from "antd"
 import { toVND } from "lib/utils"
 import * as motion from "motion/react-client"
 import { useEffect, useState } from "react"
@@ -21,7 +21,7 @@ export default function AdminRooms() {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [editingRoom, setEditingRoom] = useState<Room | null>(null)
     const [form] = Form.useForm()
-    const [accommodations, setAccommodations] = useState<Accommodation[]>([])
+    const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
 
     const fetchAccommodations = async () => {
         try {
@@ -214,13 +214,55 @@ export default function AdminRooms() {
                             </Form.Item>
                         </Flex>
 
-                        <Form.Item name="accommodationId" label="accommodation" rules={[{ required: true, message: "Vui lòng chọn accommodation" }]}>
-                            <Select
-                                placeholder="Chọn loại"
-                                options={accommodations.map((item) => ({ label: item.name, value: item.accommodationId }))}
-                            />
+                        <Form.Item
+                            name="accommodationId"
+                            label="Accommodation"
+                            rules={[{ required: true, message: "Vui lòng chọn accommodation" }]}
 
+                            // 🔥 convert accommodationId -> [partnerId, accommodationId]
+                            getValueProps={(value) => {
+                                if (!value) return { value: undefined };
+
+                                const item = accommodations.find(
+                                    (i) => i.accommodationId === value
+                                );
+
+                                return {
+                                    value: item
+                                        ? [item.partner.partnerId, item.accommodationId]
+                                        : undefined,
+                                };
+                            }}
+
+                            // 🔥 convert [partnerId, accommodationId] -> accommodationId
+                            getValueFromEvent={(value) => value?.[1]}
+                        >
+                            <Cascader
+                                placeholder="Chọn Partner → Accommodation"
+                                options={Object.values(
+                                    accommodations.reduce((acc, item) => {
+                                        const partnerId = item.partner.partnerId;
+
+                                        if (!acc[partnerId]) {
+                                            acc[partnerId] = {
+                                                value: partnerId,
+                                                label: item.partner.name,
+                                                children: [],
+                                            };
+                                        }
+
+                                        acc[partnerId].children.push({
+                                            value: item.accommodationId,
+                                            label: item.name, // ✅ label là name
+                                        });
+
+                                        return acc;
+                                    }, {} as Record<number, any>)
+                                )}
+                                expandTrigger="hover"
+                            />
                         </Form.Item>
+
                         <Form.Item
                             name="roomCategory"
                             label="Loại phòng"
