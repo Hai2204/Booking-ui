@@ -1,10 +1,11 @@
 import { accommodationService } from '@/services/accommodation';
-import { Descriptions, Flex, FloatButton, Form, Input, message, Modal, Select, Space, Table } from 'antd';
+import { Descriptions, Flex, FloatButton, Form, Input, message, Modal, Select, Space, Table, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import { OrderedListOutlined, PlusOutlined } from '@ant-design/icons';
-import type { DescriptionsProps, TableProps } from 'antd';
+import type { DescriptionsProps, GetProp, TableProps, UploadFile, UploadProps } from 'antd';
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const Detail: React.FC<{ data: Partner | null, setMode: React.Dispatch<React.SetStateAction<Mode>> }> = ({ data, setMode }) => {
 
@@ -54,18 +55,20 @@ const Detail: React.FC<{ data: Partner | null, setMode: React.Dispatch<React.Set
   ];
 
   const onFinish = async (values: any) => {
-    accommodationService.createAccommodation(values).then(resp =>{
+    console.log(values);
+    return;
+    accommodationService.createAccommodation(values).then(resp => {
       console.log(resp);
       if (resp.success) {
         message.success(resp.message || "Thành Công !")
         setIsModalVisible(false)
-      }else {
+      } else {
         message.error(resp.message || "Thất bại !")
       }
-      
+
     }).catch(err => {
       console.log(err);
-      
+
     })
   }
 
@@ -90,6 +93,28 @@ const Detail: React.FC<{ data: Partner | null, setMode: React.Dispatch<React.Set
     fetchAccommodations();
   }, [isModalVisible])
 
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+
+  const onPreview = async (file: UploadFile) => {
+    let src = file.url as string;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj as FileType);
+        reader.onload = () => resolve(reader.result as string);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
   return (
     <>
       <Space orientation="vertical" size={'middle'} align='baseline'>
@@ -107,7 +132,7 @@ const Detail: React.FC<{ data: Partner | null, setMode: React.Dispatch<React.Set
       </FloatButton.Group>
 
       <Modal
-        title={"Thêm phòng mới"}
+        title={"Thêm loại accommodation"}
         open={isModalVisible}
         onOk={() => form.submit()}
         onCancel={() => setIsModalVisible(false)}
@@ -140,6 +165,17 @@ const Detail: React.FC<{ data: Partner | null, setMode: React.Dispatch<React.Set
 
 
           </Flex>
+          <Form.Item name="fileLists" label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
+            <Upload beforeUpload={() => false} listType="picture-card" onPreview={onPreview}>
+              <button
+                style={{ color: 'inherit', cursor: 'inherit', border: 0, background: 'none' }}
+                type="button"
+              >
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </button>
+            </Upload>
+          </Form.Item>
           <Form.Item name="description" label="Mô tả">
             <Input.TextArea rows={4} placeholder="VD: Khách sạn ven biển, Thoải mái ..." />
           </Form.Item>
